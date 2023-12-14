@@ -4,7 +4,7 @@ opti = casadi.Opti();       % Opti Stack object
 
 % parameters
 x0 = opti.parameter(2,1);   % initial state values
-N = 10;                     % number of control intervals for shooting
+N = 30;                     % number of control intervals for shooting
 
 
 % decision variables
@@ -19,8 +19,11 @@ T = opti.variable();        % time
 wx1 = 1;                    % weight for x1
 wx2 = 1;                    % weight for x2
 wu = 1;                     % weight for u
+wT = 100;                   % weight for terminal cost
 
-opti.minimize(wx1*(X1*X1') + wx2*(X2*X2') + wu*(U*U'));
+terminalCosts = X1(N+1) + X2(N+1);
+
+opti.minimize(wT*terminalCosts + wx1*(X1*X1') + wx2*(X2*X2') + wu*(U*U'));
 
 
 % dynamic constraints

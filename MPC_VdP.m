@@ -10,7 +10,7 @@ x2dot = @(x1, x2, u) 0.5*(1-x1^2)*x2 - x1 + u;
 % initial conditions and initialization
 t0 = 0;
 tend = 30;
-tstep = 0.1;
+tstep = 0.05;
 time = t0:tstep:tend;
 
 
@@ -20,7 +20,7 @@ x2(1) = 0.1;
 
 
 % test robustness agaionst random noise
-enableNoise = false;
+enableNoise = true;
 
 
 % output to console
