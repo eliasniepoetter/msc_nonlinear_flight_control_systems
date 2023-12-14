@@ -39,3 +39,9 @@ Thumbs.db
 # MATLAB files #
 ###################
 *.asv
+
+# LaTeX #
+###################
+*.aux
+*.fls
+*.fdb_latexmk
