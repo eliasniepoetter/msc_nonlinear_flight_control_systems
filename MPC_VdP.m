@@ -38,9 +38,9 @@ for i = 1 : length(time)-1
             controlInput(i) = 0;
         else
             % Handling of infeasible solutions
-            % controlInput(i) = controlInput(i-1);
+            controlInput(i) = controlInput(i-1);
             % controlInput(i) = -controlInput(i-1);
-            controlInput(i) = 0;
+            % controlInput(i) = 0;
         end
     else
         % normal MPC iteration

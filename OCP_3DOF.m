@@ -3,7 +3,7 @@ function [control_fz, control_my, flag] = OCP_3DOF(mass, inertia, X, target_posi
 opti = casadi.Opti();       % Opti Stack object
 
 % parameters
-N = 20;                     % number of control intervals for shooting
+N = 10;                     % number of control intervals for shooting
 m = mass;
 Iyy = inertia;
 
@@ -28,6 +28,8 @@ Iyy = inertia;
 % objective function
 
 opti.minimize(T);
+% temrinal_dist = sqrt((Xe(N+1)-target_position(1))^2 + (Ze(N+1)-target_position(2))^2);
+% opti.minimize(temrinal_dist);
 
 
 % dynamic constraints
@@ -54,12 +56,14 @@ opti.minimize(T);
     opti.subject_to(W(2:N+1) == W_next);
 
     % f_axe = casadi.Function('f_Axe', {fx, theta}, {fx/200 - 9.81*sin(theta)}, {'fx' 'theta'}, {'f_axe'});
-    f_axe = casadi.Function('f_Axe', {theta, u}, {50000/200 - 9.81*sin(theta) - 0.05*0.7*1.225*u^2*0.5/200}, {'theta', 'u'}, {'f_axe'});
-    Axe_next = f_axe(Theta(1:N), U(1:N));
+    % f_axe = casadi.Function('f_Axe', {theta, u}, {50000/200 - 9.81*sin(theta) - 0.05*0.7*1.225*u^2*0.5/200}, {'theta', 'u'}, {'f_axe'});
+    f_axe = casadi.Function('f_Axe', {theta, u, w}, {50000/200 - 9.81*sin(theta) - (0.05*0.7*sqrt((u^2 + w^2) + 1e-9)^2*1.225*0.5 * (u/(abs(u + 1e-9)+abs(w + 1e-9) + 1e-9)))/200}, {'theta', 'u', 'w'}, {'f_axe'});
+    Axe_next = f_axe(Theta(1:N), U(1:N),W(1:N));
     opti.subject_to(Axe(2:N+1) == Axe_next);
 
-    f_aze = casadi.Function('f_Aze', {fz, theta}, {fz/200 + 9.81*cos(theta)}, {'fz' 'theta'}, {'f_aze'});
-    Aze_next = f_aze(Fz,Theta(1:N));
+    % f_aze = casadi.Function('f_Aze', {fz, theta}, {fz/200 + 9.81*cos(theta)}, {'fz' 'theta'}, {'f_aze'});
+    f_aze = casadi.Function('f_Aze', {fz, theta, u, w}, {fz/200 + 9.81*cos(theta) - (0.05*0.7*sqrt((u^2 + w^2) + 1e-9)^2*1.225*0.5 * (w/(abs(u + 1e-9)+abs(w + 1e-9) + 1e-9)))/200}, {'fz' 'theta', 'u', 'w'}, {'f_aze'});
+    Aze_next = f_aze(Fz,Theta(1:N),U(1:N),W(1:N));
     opti.subject_to(Aze(2:N+1) == Aze_next);
 
     xe_dot = casadi.Function('xe_dot', {u, w, theta}, {u*cos(theta) + w*sin(theta)}, {'u' 'w' 'theta'}, {'xe_dot'});
@@ -92,16 +96,17 @@ opti.subject_to(Theta(1)==X(8));
 % input constraints
 % opti.subject_to(Fx<100000);
 % opti.subject_to(Fx>0);
-opti.subject_to(Fz<100000); 
-opti.subject_to(Fz>-100000);
-opti.subject_to(My<10000); 
-opti.subject_to(My>-10000);
+opti.subject_to(Fz<50000); 
+opti.subject_to(Fz>-50000);
+opti.subject_to(My<1000); 
+opti.subject_to(My>-1000);
 
 % state constraints
 
 
 % time constraint
 opti.subject_to(T>=0);
+% opti.subject_to(T<20);
 
 % distance to target within delta
 delta = 100;
@@ -122,7 +127,7 @@ try
     % Fx_traj = sol.value(Fx);
     Fz_traj = sol.value(Fz);
     My_traj = sol.value(My);
-    control_fx = Fx_traj(1);
+    % control_fx = Fx_traj(1);
     control_fz = Fz_traj(1);
     control_my = My_traj(1);
     flag = 0;
