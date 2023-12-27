@@ -103,7 +103,7 @@ for i = 1 : length(time)-1
     Tx(i+1) = Tx(i) + tstep*200;
     Tz(i+1) = Tz(i) + tstep*0;
     % [Fx(i), Fz(i), My(i), flags(i)] = OCP_3DOF(m, Iyy, X, [Tx; Tz]);
-    [Fz(i), My(i), flags(i)] = OCP_3DOF(m, Iyy, X, [Tx(i); Tz(i)]);
+    [Fz(i), My(i), flags(i)] = ocp_missile(m, Iyy, X, [Tx(i); Tz(i)]);
     
     % if isnan(Fx(i))
     %     Fx(i) = 0;

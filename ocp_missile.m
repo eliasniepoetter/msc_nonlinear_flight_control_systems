@@ -1,4 +1,4 @@
-function [control_fz, control_my, flag] = OCP_3DOF(mass, inertia, X, target_position)
+function [control_fz, control_my, flag] = ocp_missile(mass, inertia, X, target_position)
 
 opti = casadi.Opti();       % Opti Stack object
 
