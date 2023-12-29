@@ -11,8 +11,8 @@ Iyy = 1000;
 u_dot = @(A_xe, q, w) A_xe - q*w;
 w_dot = @(A_ze, q, u) A_ze + q*u;
 
-drag_x = @(u, w) 0.05*0.7*sqrt(u^2 + w^2)^2*1.225*0.5 * (u/(abs(u)+abs(w)));
-drag_z = @(u, w) 0.05*0.7*sqrt(u^2 + w^2)^2*1.225*0.5 * (w/(abs(u)+abs(w)));
+drag_x = @(u, w, ze) 0.05*0.7*sqrt(u^2 + w^2)^2*airDensityISA(ze)*0.5 * (u/(abs(u)+abs(w)));
+drag_z = @(u, w, ze) 0.05*0.7*sqrt(u^2 + w^2)^2*airDensityISA(ze)*0.5 * (w/(abs(u)+abs(w)));
 
 % Überarbeitung des Widerstandes:
 % absolute Geschwindigkeit berechnen und damit den Drag bestimmen
@@ -22,8 +22,8 @@ drag_z = @(u, w) 0.05*0.7*sqrt(u^2 + w^2)^2*1.225*0.5 * (w/(abs(u)+abs(w)));
 % Ergänzung:
 % costraint für Flugzeit auf Ausbrenndauer des Motors
 
-f_A_xe = @(Fx, theta, u, w) Fx/m - 9.81*sin(theta) - drag_x(u, w)/200;
-f_A_ze = @(Fz, theta, u, w) Fz/m + 9.81*cos(theta) - drag_z(u, w)/200;
+f_A_xe = @(Fx, theta, u, w, ze) Fx/m - 9.81*sin(theta) - drag_x(u, w, ze)/200;
+f_A_ze = @(Fz, theta, u, w, ze) Fz/m + 9.81*cos(theta) - drag_z(u, w, ze)/200;
 
 Xe_dot = @(u, w, theta) u*cos(theta) + w*sin(theta);
 Ze_dot = @(u, w, theta) -u*sin(theta) + w*cos(theta);
@@ -120,8 +120,8 @@ for i = 1 : length(time)-1
     % Euler-Cauchy Update for states
     q(i+1) = q(i) + tstep*q_dot(My(i));
     theta(i+1) = theta(i) + tstep*theta_dot(q(i));
-    A_xe(i+1) = f_A_xe(Fx(i), theta(i), u(i), w(i));
-    A_ze(i+1) = f_A_ze(Fz(i), theta(i), u(i), w(i));
+    A_xe(i+1) = f_A_xe(Fx(i), theta(i), u(i), w(i), Ze(i));
+    A_ze(i+1) = f_A_ze(Fz(i), theta(i), u(i), w(i), Ze(i));
     w(i+1) = w(i) + tstep*w_dot(A_ze(i), q(i), u(i));
     u(i+1) = u(i) + tstep*u_dot(A_xe(i), q(i), w(i));
     Xe(i+1) = Xe(i) + tstep*Xe_dot(u(i), w(i), theta(i));
@@ -278,9 +278,6 @@ xlabel('time');
 ylabel('My');
 grid on;
 hold off;
-
-
-
 
 
 
