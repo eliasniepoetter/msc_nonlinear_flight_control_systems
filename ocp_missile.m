@@ -37,6 +37,7 @@ opti.minimize(T);
     dt = T/N;
     u = casadi.MX.sym('u');
     w = casadi.MX.sym('w');
+    ze = casadi.MX.sym('ze');
     axe = casadi.MX.sym('axe');
     aze = casadi.MX.sym('aze');
     theta = casadi.MX.sym('theta');
@@ -57,13 +58,13 @@ opti.minimize(T);
 
     % f_axe = casadi.Function('f_Axe', {fx, theta}, {fx/200 - 9.81*sin(theta)}, {'fx' 'theta'}, {'f_axe'});
     % f_axe = casadi.Function('f_Axe', {theta, u}, {50000/200 - 9.81*sin(theta) - 0.05*0.7*1.225*u^2*0.5/200}, {'theta', 'u'}, {'f_axe'});
-    f_axe = casadi.Function('f_Axe', {theta, u, w}, {50000/200 - 9.81*sin(theta) - (0.05*0.7*sqrt((u^2 + w^2) + 1e-9)^2*1.225*0.5 * (u/(abs(u + 1e-9)+abs(w + 1e-9) + 1e-9)))/200}, {'theta', 'u', 'w'}, {'f_axe'});
-    Axe_next = f_axe(Theta(1:N), U(1:N),W(1:N));
+    f_axe = casadi.Function('f_Axe', {theta, u, w, ze}, {50000/200 - 9.81*sin(theta) - (0.05*0.7*sqrt((u^2 + w^2) + 1e-9)^2*airDensityISA(ze)*0.5 * (u/(abs(u + 1e-9)+abs(w + 1e-9) + 1e-9)))/200}, {'theta', 'u', 'w', 'ze'}, {'f_axe'});
+    Axe_next = f_axe(Theta(1:N), U(1:N),W(1:N), Ze(1:N));
     opti.subject_to(Axe(2:N+1) == Axe_next);
 
     % f_aze = casadi.Function('f_Aze', {fz, theta}, {fz/200 + 9.81*cos(theta)}, {'fz' 'theta'}, {'f_aze'});
-    f_aze = casadi.Function('f_Aze', {fz, theta, u, w}, {fz/200 + 9.81*cos(theta) - (0.05*0.7*sqrt((u^2 + w^2) + 1e-9)^2*1.225*0.5 * (w/(abs(u + 1e-9)+abs(w + 1e-9) + 1e-9)))/200}, {'fz' 'theta', 'u', 'w'}, {'f_aze'});
-    Aze_next = f_aze(Fz,Theta(1:N),U(1:N),W(1:N));
+    f_aze = casadi.Function('f_Aze', {fz, theta, u, w, ze}, {fz/200 + 9.81*cos(theta) - (0.05*0.7*sqrt((u^2 + w^2) + 1e-9)^2*airDensityISA(ze)*0.5 * (w/(abs(u + 1e-9)+abs(w + 1e-9) + 1e-9)))/200}, {'fz' 'theta', 'u', 'w', 'ze'}, {'f_aze'});
+    Aze_next = f_aze(Fz,Theta(1:N),U(1:N),W(1:N),Ze(1:N));
     opti.subject_to(Aze(2:N+1) == Aze_next);
 
     xe_dot = casadi.Function('xe_dot', {u, w, theta}, {u*cos(theta) + w*sin(theta)}, {'u' 'w' 'theta'}, {'xe_dot'});
@@ -139,4 +140,5 @@ catch
 end
 
 end
+
 
