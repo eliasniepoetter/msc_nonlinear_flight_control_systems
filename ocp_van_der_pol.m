@@ -1,4 +1,4 @@
-function [u, flag] = VdP_OCP(x1_current, x2_current)
+function [u, flag] = ocp_van_der_pol(x1_current, x2_current)
 
 opti = casadi.Opti();       % Opti Stack object
 

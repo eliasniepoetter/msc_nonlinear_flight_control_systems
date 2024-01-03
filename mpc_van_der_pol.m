@@ -31,16 +31,16 @@ fprintf('---------------------------------------------------\n\n');
 
 % closed loop dynamics simulation
 for i = 1 : length(time)-1
-    [u, flags(i)] = VdP_OCP(x1(i), x2(i));
+    [u, flags(i)] = ocp_van_der_pol(x1(i), x2(i));
     if isnan(u)
         if i == 1
             % catch if initial problem is infeasible
             controlInput(i) = 0;
         else
             % Handling of infeasible solutions
-            controlInput(i) = controlInput(i-1);
+            % controlInput(i) = controlInput(i-1);
             % controlInput(i) = -controlInput(i-1);
-            % controlInput(i) = 0;
+            controlInput(i) = 0;
         end
     else
         % normal MPC iteration
