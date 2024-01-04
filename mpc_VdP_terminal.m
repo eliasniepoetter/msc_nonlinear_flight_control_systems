@@ -2,6 +2,7 @@ close all;
 clear;
 clc;
 
+
 % dynamics of the Van der Pol Oscillator
 x1dot = @(x2) x2;
 x2dot = @(x1, x2, u) 0.5*(1-x1^2)*x2 - x1 + u;
@@ -9,22 +10,22 @@ x2dot = @(x1, x2, u) 0.5*(1-x1^2)*x2 - x1 + u;
 
 % initial conditions and initialization
 t0 = 0;
-tend = 30;
+tend = 50;
 tstep = 0.05;
 time = t0:tstep:tend;
 
 
 % initial states
-x1(1) = -3;
-x2(1) = 3;
+x1(1) = -5;
+x2(1) = -5;
 
 % Feedback gain
-K = [0.414213562373093	1.94167511067722];
+K = [0.414213562373093	2.25454470582718];
 % level
-alpha = 2;
+alpha = 2000;
 % matrix P
-P = [0.906788577923648	0.0848859743757874
-    0.0848859743757874	0.731950953837246];
+P = [261.524853855428	158.946158648386
+158.946158648386	181.090662200890];
 
 
 % test robustness agaionst random noise
@@ -42,7 +43,7 @@ flags = 0;
 % closed loop dynamics simulation
 for i = 1 : length(time)-1
     if [x1(i);x2(i)]'*P*[x1(i);x2(i)] > alpha
-        %disp('>')
+        disp('>')
         [u, flags(i)] = VdP_OCP_terminal(x1(i), x2(i),P,alpha);
         if isnan(u)
             if i == 1
@@ -59,7 +60,7 @@ for i = 1 : length(time)-1
             controlInput(i) = u;
         end
     else
-        %disp('<')
+        disp('<')
         controlInput(i) = -K*[x1(i);x2(i)];
     end
 
@@ -83,17 +84,6 @@ end
 
 %% Postprocessing
 
-[V, D] = eig(P);
-
-% Generate 100 values equally distributed along the border
-num_points = 100;
-theta_values = linspace(0, 2*pi, num_points);
-border_points = zeros(2, num_points);
-for i = 1:num_points
-    x_theta = sqrt(alpha) * V * sqrt(D) * [cos(theta_values(i)); sin(theta_values(i))];
-    border_points(:, i) = x_theta;
-end
-
 figure;
 hold on;
 title('State Trajectory');
@@ -101,10 +91,18 @@ plot(x1, x2);
 xlabel('x1');
 ylabel('x2');
 grid on;
-plot(border_points(1, :), border_points(2, :), 'b.');
+
+% Define the quadratic form expression x'Px
+% Generate a grid of points
+[x1plot, x2plot] = meshgrid(linspace(-5, 5, 100), linspace(-5, 5, 100));
+
+% Evaluate the quadratic form for each point
+quad_form = x1plot .* (P(1,1) * x1plot + P(1,2) * x2plot) + x2plot .* (P(2,1) * x1plot + P(2,2) * x2plot);
+
+% Create a contour plot
+contour(x1plot, x2plot, quad_form, [alpha, alpha], 'LineWidth', 2);
+
 hold off;
-
-
 
 figure;
 tiledlayout(3, 1);
@@ -141,6 +139,5 @@ ylabel('Flag');
 xlabel('Iteration');
 grid on;
 hold off;
-
 
 
