@@ -2,7 +2,6 @@
 
 clear
 
-
 syms x1 x2 u
 
 x = [x1;x2];
@@ -22,7 +21,7 @@ Q = [1 0
     0 1];
 R = 1;
 
-[K,S,P] = lqr(Anew,Bnew,Q,R);
+[K,~,~] = lqr(Anew,Bnew,Q,R);
 
 % sys1 = ss(Anew-Bnew*K,Bnew,C,D);
 % step(sys1)
@@ -34,7 +33,7 @@ kappa = -real(max_eigen) - 0.02;
 P = sym('P', [2 2]);
 
 % Lyapunov eq
-eq = ((Anew + Bnew*K) + kappa*eye(2))'*P + P * ((Anew + Bnew*K) + kappa*eye(2)) == Q + K'*R*K;
+eq = ((Anew - Bnew*K) + kappa*eye(2))'*P + P * ((Anew - Bnew*K) + kappa*eye(2)) == -(Q + K'*R*K);
 p = solve(eq,P);
 
 % Initialize the matrix P
@@ -98,10 +97,11 @@ alpha = 2;
 clear x
 
 % Dynamics function
-fc = @(x) [x(2); 0.1*(1-x(1)^2)*x(2) - x(1) + K*x];
+fc = @(x) [x(2); 0.5*(1-x(1)^2)*x(2) - x(1) + K*x];
+phi = @(x) (fc(x) - (Anew - Bnew * K) * x);
 
 % Objective function for minimization
-objective = @(x) -x' * P * (fc(x) - (Anew + Bnew * K) * x) + kappa * x' * P * x;
+objective = @(x) -x' * P * phi(x) + kappa * x' * P * x;
 
 % Nonlinear constraint function
 nonlinear_constraint = @(x) deal([], x' * P * x - alpha);
@@ -110,7 +110,7 @@ nonlinear_constraint = @(x) deal([], x' * P * x - alpha);
 options = optimoptions('fmincon', 'Algorithm', 'interior-point');
 
 % Initial guess for x
-x0 = zeros(2, 1);
+x0 = ones(2, 1);
 
 % Optimization using fmincon
 result2 = fmincon(objective, x0, [], [], [], [], [], [], nonlinear_constraint, options);
