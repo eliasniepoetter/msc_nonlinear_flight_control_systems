@@ -1,0 +1,32 @@
+%% plot vector field
+
+x1dot = @(x1, x2) x2 - K*[x1;x2]*(mu + (1-mu)*x1);
+x2dot = @(x1, x2) x1 - K*[x1;x2]*(mu - 4*(1 - mu)*x2);
+
+% Define the grid of points where you want to plot the vectors
+[x11, x22] = meshgrid(-3:0.1:3, -3:0.1:3);
+
+% Evaluate the vector field at each point
+u = zeros(size(x11));
+v = zeros(size(x22));
+
+for i = 1:numel(x11)
+    u(i) = x1dot(x11(i), x22(i));
+    v(i) = x2dot(x11(i), x22(i));
+end
+
+% Normalize the vectors for better visualization
+magnitude = sqrt(u.^2 + v.^2);
+u_normalized = u ./ magnitude;
+v_normalized = v ./ magnitude;
+
+% Plot the vector field using quiver
+hold on
+figure(1);
+hold on
+quiver(x11, x22, u_normalized, v_normalized, 'AutoScale', 'on', 'AutoScaleFactor', 0.5);
+
+% Set plot properties
+xlabel('x1');
+ylabel('x2');
+grid on;
