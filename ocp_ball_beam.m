@@ -1,10 +1,10 @@
-function [u, flag] = ocp_van_der_pol(x1_current, x2_current, P, alpha)
+function [u, flag] = ocp_ball_beam(x1_current, x2_current, P, alpha)
 
 opti = casadi.Opti();       % Opti Stack object
 
 % parameters
 x0 = opti.parameter(2,1);   % initial state values
-N = 150;                     % number of control intervals for shooting
+N = 40;                     % number of control intervals for shooting
 
 
 % decision variables
@@ -12,15 +12,15 @@ X = opti.variable(2,N+1);   % states
 X1 = X(1,:);                % state x1
 X2 = X(2,:);                % state x2
 U = opti.variable(1,N);     % control trajectory
-% T = opti.variable();        % time
-T = 15;
+T = opti.variable();        % time
 
 
 % objective function
 wx1 = 1;                    % weight for x1
 wx2 = 1;                    % weight for x2
-wu = 10;                     % weight for u
+wu = 1;                     % weight for u
 wT = 1;                     % weight for terminal cost
+wTime = 100;
 
 % terminalCosts = X1(N+1) + X2(N+1);
 
@@ -29,7 +29,7 @@ wT = 1;                     % weight for terminal cost
 
 terminalCosts = [X1(N+1);X2(N+1)]'*P*[X1(N+1);X2(N+1)];
 
-J = wT*terminalCosts + wx1*(X1*X1') + wx2*(X2*X2') + wu*(U*U');
+J = wT*terminalCosts + wx1*(X1*X1') + wx2*(X2*X2') + wu*(U*U') + wTime*T;
 opti.minimize(J);
 
 
@@ -47,16 +47,17 @@ opti.subject_to(X(:,2:N+1) == X_next);
 % additional constraints
 % opti.subject_to(X1(N+1)==0);                    % stabilizing terminal constraint 
 % opti.subject_to(X2(N+1)==0);                    % 
+% alpha = 79;
 opti.subject_to(X(:,N+1)'*P*X(:,N+1) < alpha);  % terminal set    
 opti.subject_to(X1(1)==x0(1));                  % initial state
 opti.subject_to(X2(1)==x0(2));                  % 
 opti.subject_to(X1<10);                         % state constraints 
 opti.subject_to(X1>-10);                        %
 opti.subject_to(X2<10);                         %
-opti.subject_to(X2>-1);                        %
-opti.subject_to(U<100);                         % control constraints
-opti.subject_to(U>-100);
-% opti.subject_to(T>=0);                          % positive Time only
+opti.subject_to(X2>-10);                        %
+opti.subject_to(U<100);                          % control constraints
+opti.subject_to(U>-100);                         %
+opti.subject_to(T>=0);                          % positive Time only
 
 
 % solve the problem

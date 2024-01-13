@@ -84,7 +84,7 @@ B = round(B, 6);
 
 C = eye(6);
 D = zeros(6, 3);
-p = [-10; -10; 0; 0; -10; 0];
+p = [-200; -200; 0; 0; -200; 0];
 K = place(A,B,p);
 Acl = A-B*K;
 
@@ -104,28 +104,58 @@ poles_missile_lin_placed = pole(missile_lin_placed);
 
 %% Step 2: Choose constant kappa
 
-Acl_eigen = eig(Acl);
-kappa_interval = [0 -max(Acl_eigen)];
-kappa = 1;
+Ak = A+B*K;
+Ak_eigen = eig(Ak);
+kappa_interval = [0 -max(Ak_eigen)];
+kappa = -195;
 
 % MATLAB solver for Lyapunov equation (continous time):
     % AX + XA' + Q = 0
 % Allgöwer notation:
     % X = P
-    % A = (Acl + kappa*I)'
+    % A = (Ak + kappa*I)'
     % Q = Q_star
     % Q_star = Q + K'RK
     % Q = eye(6) -> weights for states
     % R = eye(3) -> weights for inputs
 
-A_lyap = (Acl + kappa*eye(6));
-Q = eye(6);
-R = eye(3);
+A_lyap = (Ak + kappa*eye(6))';
+Q = eye(6)*1e-5;
+R = eye(3)*1e-5;
 Q_star = Q + K'*R*K;
 P = lyap(A_lyap,Q_star);
+chol(P)
+
+
+% syms Ps;
+% eqn = (Ak + kappa*eye(6))'*Ps + Ps*(Ak + kappa*eye(6)) == -(Q + K'*R*K);
+% P = solve(eqn,Ps);
 
 
 %% Step 3: Find largest aplha_1
+
+pvar alpha1;
+x = mpvar('x', [6,1]);
+% pconst = -0.5*(x'*P*x) + 0.5*alpha1 >= 0;
+pconst = -0.5*(x'*P*x) + 100 >= 0;
+
+info = sosopt(pconst, x);
+disp(['Feasibility of Optimization Problem: ' num2str(info.feas)]);
+
+
+
+
+
+
+
+
+
+
+
+
+%% Step 4: Find largest alpha
+
+
 
 
 
