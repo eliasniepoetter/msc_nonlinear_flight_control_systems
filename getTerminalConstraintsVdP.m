@@ -11,9 +11,12 @@ x = [x1 x2];
 % inputs
 syms u
 
+% parameters
+muvdp = 0.5;
+
 % dynamics
 x1dot = @(x2) x2;
-x2dot = @(x1,x2,u) 0.5*(1-x1^2)*x2 - x1 + u;
+x2dot = @(x1,x2,u) muvdp*(1-x1^2)*x2 - x1 + u;
 
 % calculate jacobians
 fx_x1dot = jacobian(x1dot(x2), x);
@@ -37,7 +40,7 @@ C = eye(2);
 D = zeros(2, 1);
 
 % place poles
-p = [-10,-1];
+p = [-2,-1];
 K = place(A,B,p);
 Acl = A-B*K;
 
@@ -60,7 +63,7 @@ step(vdp_linearized_placed);
 Ak = A-B*K;
 Ak_eigen = eig(Ak);
 kappa_interval = [0 -max(Ak_eigen)];
-kappa = 0.9;
+kappa = 0.95*max(kappa_interval);
 
 A_lyap = (Ak + kappa*eye(2))';
 Q = eye(2);
@@ -82,7 +85,7 @@ V = x'*P*x;
 
 uLim = 100;
 alpha1_min = 0;
-alpha1_max = 10000;
+alpha1_max = 1e8;
 
 % bisection procedure
 figure;
@@ -90,7 +93,7 @@ hold on;
 grid on;
 xlabel('x1');
 ylabel('x2');
-while (alpha1_max-alpha1_min)>0.001
+while (alpha1_max-alpha1_min)>0.01
     alpha1 = (alpha1_min + alpha1_max)/2;
     p = x'*P*x - alpha1;
     [xin,xon] = psample(p,x,[0;0],10000);
@@ -106,7 +109,7 @@ while (alpha1_max-alpha1_min)>0.001
     else
         alpha1_max = alpha1;
     end
-    pcontour(V, alpha1, 40*[-1 1 -1 1]);
+    pcontour(V, alpha1, 100*[-1 1 -1 1]);
     pause(0.1)
 end
 
@@ -117,12 +120,12 @@ clear pconstr x u
 
 % system dynamics
 x = mpvar('x', [2 1]);
-f = [x(2); 0.5*(1-x(1)^2)*x(2) - x(1) - K*x];
+f = [x(2); muvdp*(1-x(1)^2)*x(2) - x(1) - K*x];
 
 V = x'*P*x;
 
 % sos multiplier
-z = monomials(x, 0:4);
+z = monomials(x, 0:2);
 s = sosdecvar('s',z);
 
 % gamma sublevel set
@@ -135,7 +138,6 @@ epsilon = 10^-6; % small positive number
 pconstr(1) = V - epsilon*(x'*x) >= 0;
 pconstr(2) = s*(V-g) -jacobian(V,x)*f - epsilon*(x'*x) >= 0;
 pconstr(3) = s>= 0;
-% pconstr(4) = K*x <= uLim;
 
 % bisection procedure
 figure;
@@ -144,7 +146,7 @@ grid on;
 title('Region of Attraction Estimation');
 xlabel('x1');
 ylabel('x2');
-while (alpha_max-alpha_min)>0.001
+while (alpha_max-alpha_min)>0.01
     alpha = (alpha_min + alpha_max)/2;
     [info, dopt] = sosopt(subs(pconstr, g, alpha), x);
         if info.feas ==1
@@ -153,7 +155,7 @@ while (alpha_max-alpha_min)>0.001
         else
             alpha_max = alpha;
         end
-    pcontour(V, alpha, 30*[-1 1 -1 1]);
+    pcontour(V, alpha, 10*[-1 1 -1 1]);
     pause(0.075)
 end
 
