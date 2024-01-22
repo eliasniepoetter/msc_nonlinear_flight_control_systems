@@ -1,14 +1,13 @@
 \documentclass[10pt,a4paper]{article}
+\usepackage[left=2.5cm,right=2.5cm,top=3.5cm,bottom=1.5cm]{geometry}
 \usepackage[utf8]{inputenc}
-\usepackage[ngerman]{babel}
+\usepackage[english]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{lmodern}
-% \usepackage{physics}
-\usepackage[left=2.5cm,right=2.5cm,top=3.5cm,bottom=1.5cm]{geometry}
 \usepackage{siunitx}
 \usepackage{fancyhdr}
 \usepackage{enumerate}
@@ -19,6 +18,7 @@
 \usepackage{lipsum}
 \usepackage{tcolorbox}
 \usepackage{enumitem}
+\usepackage{varwidth}
 
 % Setup SI units
 \sisetup{locale=DE}
@@ -41,22 +41,43 @@
 \begin{document}
 \pagestyle{fancy}
 \lhead{University of Stuttgart}
-\chead{Nonlinear Flight Control Systems}
-\rhead{Elias Niepötter}
+\rhead{Institute of Flight Mechanics and Control}
 
 % space arounf floating objects
 \setlength\intextsep{5pt}
 \setlength{\belowcaptionskip}{0pt}
 %----------------------------------------------------------------------
 
-
-\begin{tcolorbox}[boxrule=2pt, arc=0pt, colback=white, colframe=black]
 \begin{center}
-	\Large\textbf{Nonlinear Flight Control Systems - Semester Report}
+	\LARGE{\textbf{Systems Theory Project Report}}\\[0.25em]
+	\normalsize\textbf{Nonlinear Model Predictive Control Design}\\[0.25em]
+	\normalsize{Elias Niepötter (3684096)}
 \end{center}
-\end{tcolorbox}
+
+\vskip 0.5cm
+
+\begin{abstract}
+	\lipsum[1]
+\end{abstract}
+
+\vskip 1cm
+
+\begin{multicols}{2}
+
+	\section{Introduction}
+	\lipsum[1-2]
+
+	\section{Model Predictive Control}
+	\lipsum[1-2]
+
+	\section{Dual Mode Controller}
+	\lipsum[1-2]
+
+	\section{Exemplary Application}
+	\lipsum[1-2]
 
 
+\end{multicols}
 
 
 
