@@ -1,5 +1,5 @@
 \documentclass[10pt,a4paper]{article}
-\usepackage[left=2.5cm,right=2.5cm,top=3.5cm,bottom=1.5cm]{geometry}
+\usepackage[left=2.0cm,right=2.0cm,top=3.5cm,bottom=1.5cm]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage[T1]{fontenc}
@@ -33,6 +33,13 @@
 	\graphicspath{{img/}}
 \usepackage[skip=2pt]{caption}
  
+% Abkürzungen
+\usepackage{glossaries}
+\newacronym{mpc}{MPC}{Model Predictive Control}
+\newacronym{sos}{SOS}{Sum of Squares}
+
+
+
  
 % Being of document
 %----------------------------------------------------------------------
@@ -43,9 +50,13 @@
 \lhead{University of Stuttgart}
 \rhead{Institute of Flight Mechanics and Control}
 
-% space arounf floating objects
+% space around floating objects
 \setlength\intextsep{5pt}
 \setlength{\belowcaptionskip}{0pt}
+
+% parskip
+\setlength{\parindent}{0pt}
+
 %----------------------------------------------------------------------
 
 \begin{center}
@@ -64,28 +75,28 @@
 
 \begin{multicols}{2}
 
-	\section{Introduction}
-	\lipsum[1-2]
+\section{Introduction}
+The goal of the project is to combine the methods of \gls{sos} Programming and the design of nonlinear \gls{mpc}. Based on an exemplary nonlinear dynamical system
+an \gls{mpc} is designed in such a way that it acts outside a specified region in the state space and drives it towards this region.
+The region is called \textit{terminal region}. Inside the terminal region a lienar controller takes over, this concept is called \textit{Dual Model Control}.
+\gls{sos} methods are used to estimate the terminal region which is a \textit{region of attraction} of the closed loop dynamics of the linearly controlled 
+system.
 
-	\section{Model Predictive Control}
-	\lipsum[1-2]
+The report first introduces the basics of \gls{mpc} in \ref{sec:mpc}. Continuing with the concept of dual mode controller design focussing on \gls{sos} methods in \ref{sec:dualModeControl}.
+Lastly, the methods presented are applied to the ball beam system. The results are shown and discussed in \ref{sec:example}.
 
-	\section{Dual Mode Controller}
-	\lipsum[1-2]
+\section{Model Predictive Control}
+\label{sec:mpc}
+\lipsum[1-2]
 
-	\section{Exemplary Application}
-	\lipsum[1-2]
+\section{Dual Mode Control}
+\label{sec:dualModeControl}
+\lipsum[1-2]
+
+\section{Exemplary Application}
+\label{sec:example}
+\lipsum[1-2]
 
 
 \end{multicols}
-
-
-
-
-
-
-
-
-
-
 \end{document}
