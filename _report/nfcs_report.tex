@@ -141,7 +141,7 @@ The control input $\mu$ at each discrete time step $t_k$ is the first element of
 
 See \cite{nmpcBible} and \cite{RaffAllgoewer} for details on the formulation of the \gls{ocp} resp. the \gls{mpc} formulation.
 
-\subsection{Terminal Conditions}
+\subsection{Terminal Conditions for MPCs}
 The shown \gls{mpc} includes terminal conditions. These conditions are part of the design of the \gls{mpc} and are used to
 guarantee certain stability properties of the closed loop system. The followong Theorem connects terminal conditions and
 stability of the closed loop system. \cite{RaffAllgoewer}
@@ -150,6 +150,7 @@ stability of the closed loop system. \cite{RaffAllgoewer}
 The closed loop system is asymptotically stable if the optimal control problem is feasible at the first time instant and
 the following assumptions are satisfied for a terminal cost $E$, a terminal region $\mathcal{E}$, and a locally stabilizing
 control law $u_{k}=\varphi\left(x_{k}\right)$:
+
 [A1] $E\left(x_{k}\right)>0, \forall x_{k} \in \mathbb{R}^{n} \backslash\{0\}$
 
 [A2]  $\mathcal{E} \subseteq \mathcal{X}, 0 \in \mathcal{E}$
@@ -225,8 +226,50 @@ matrix $K$ based on LQ-regulators.\\
 \textit{Step 4.} Find the largest possible $\alpha \in (0,\alpha_1]$ s.t. $\{x_k \in \mathbb{R}^n \mid x_k^TPx_k \leq \alpha \}$ is an 
 inner approximation of the region of attraction of the closed loop dynamics of the linearly controlled system.
 
-\subsection*{Generalized S-procedure}
-In \textit{Step 3} and \textit{4} one tries to find the largest sublevel set of a given function. 
+
+\subsection{Lyapunov's second method for stability}
+
+
+
+\subsection{\gls{sos} Programming}
+\todo{Intro to SOS}
+The following procedure, called \textit{Generalized S-procedure}, is used to solve the set containment problem:
+
+\begin{tcolorbox}[colback=gray!20, colframe=gray!80,title=Generalized S-procedure \cite{loureiro2023presentation},arc=0.2mm]        
+Given $h, f_0, \ldots, f_r \in \mathbb{R}[x]$, if there exist $p \in \mathbb{R}[x]$, and $s_1, \ldots, s_f \in \Sigma[x]$ s.t.
+\begin{equation}
+	\text { ph }-\sum_{j=1}^r s_j f_j+f_0 \in \Sigma[x]
+\end{equation}
+then the following set containment holds:
+\begin{equation}
+	\left\{x \in \mathbb{R}^n \mid h(x)=0, f_1(x) \geq 0, \ldots, f_r(x) \geq 0\right\} \subseteq\left\{x \in \mathbb{R}^n \mid f_0(x) \geq 0\right\}
+\end{equation}
+\end{tcolorbox}
+
+
+\subsection{Sublevel set optimization}
+In \textit{Step 3} and \textit{4} one tries to find the largest sublevel set of a given function. These optimization problems
+can be formulated to one single problem. The idea is to setup a nonlinear root search for the parameter $\alpha$. An iterative 
+algorithm, e.g. a bisection algorithm \todo{short description of the algorithm}, is used to maximize the parameter. The problem can be formulated as follows:
+
+\begin{equation}
+\label{eq:sos_problem}
+\max\limits_{\alpha} \quad \text{V}\left(\{x_k \in \mathbb{R}^n \mid x_k^TPx_k \leq \alpha \}\right)
+\end{equation}
+
+The resulting constraints for the optimiztion are
+\todo{Finish full problem formulation}
+\begin{align}
+	s_{i} &\in \Sigma[x]\\
+	-s_{i}(-x^TPx + \alpha_1) + (Kx + u_{\text{max},i}) &\in \Sigma[x]\\
+	-s_{N_u +i}(-x^TPx + \alpha_1) + (-Kx - u_{\text{min},i}) &\in \Sigma[x]
+\end{align}
+
+
+
+
+
+
 
 
 
@@ -235,7 +278,7 @@ In \textit{Step 3} and \textit{4} one tries to find the largest sublevel set of 
 \section{Exemplary Application}
 \label{sec:example}
 
-\todo{Implementation?}
+\todo{Implementation details? Multiple Shooting?}
 
 
 \section{Conclusion \& Outlook}

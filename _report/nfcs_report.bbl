@@ -10,6 +10,11 @@ Jürgen~Pannek Lars~Grüne.
 \newblock {\em Nonlinear Model Predicitve Control}.
 \newblock Springer Cham, 2 edition, 2016.
 
+\bibitem{loureiro2023presentation}
+Renato Loureiro.
+\newblock Nonlinear sos programming.
+\newblock Presentation at the Seminar on System Theoretic Methods for Flight Control, November 2023.
+
 \bibitem{RaffAllgoewer}
 T.~Raff, C.~Ebenbauer, R.~Findeisen, and F.~Allgöwer.
 \newblock {\em Nonlinear Model Predictive Control and Sum of Squares Techniques}, volume~10, pages 325--344.
