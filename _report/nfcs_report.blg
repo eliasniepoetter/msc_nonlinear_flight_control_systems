@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99d (TeX Live 2023)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: nfcs_report.aux
+The style file: plain.bst
+Database file #1: references.bib
+Warning--empty publisher in RaffAllgoewer
+You've used 2 entries,
+            2118 wiz_defined-function locations,
+            512 strings with 4341 characters,
+and the built_in function-call counts, 748 in all, are:
+= -- 68
+> -- 30
+< -- 2
++ -- 12
+- -- 10
+* -- 50
+:= -- 120
+add.period$ -- 6
+call.type$ -- 2
+change.case$ -- 10
+chr.to.int$ -- 0
+cite$ -- 3
+duplicate$ -- 34
+empty$ -- 61
+format.name$ -- 10
+if$ -- 163
+int.to.chr$ -- 0
+int.to.str$ -- 2
+missing$ -- 4
+newline$ -- 13
+num.names$ -- 4
+pop$ -- 19
+preamble$ -- 1
+purify$ -- 9
+quote$ -- 0
+skip$ -- 25
+stack$ -- 0
+substring$ -- 38
+swap$ -- 12
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 4
+warning$ -- 1
+while$ -- 6
+width$ -- 3
+write$ -- 24
+(There was 1 warning)
