@@ -197,16 +197,51 @@ the follwing. For more details see \cite{nmpcBible}.
 
 \section{Synthesis of Terminal Conditions}
 \label{sec:synTermCond}
-% \lipsum[1-2]
+Followed by the introduction of terminal conditions and their application in \gls{mpc}, the synthesis of terminal cost $E$, the
+terminal region $\mathcal{E}$ and the locally stabilizing linear controller $\varphi(x_{k})$ is presented. The procedures are based
+on \cite{CHEN19981205}. This section draws the connection to \gls{sos} programming. The procedure is as follows:\\
 
+\textit{Step 1.} Solve the linear control problem based on the jacobian linearization of the nonlinear system and obtain the feedback
+matrix $K$.\\
+
+\textit{Step 2.} Choose a constant $\kappa \in [0,\infty)$ satisfying
+\begin{equation}
+	\kappa < -\lambda_{\text{max}}(A_K)
+\end{equation}
+
+where $A_K \coloneqq A + BK$ expressing the closed loop dynamics of the linearized and locally controlled system. The operator
+$\lambda_{\text{max}}(\cdot)$ denotes the maximum eigenvalue of a matrix. Furthermore, solve the lyapunov equation
+
+\begin{equation}
+	\left(A_K+\kappa I\right)^{\mathrm{T}} P+P\left(A_K+\kappa I\right)=-Q^*
+\end{equation}
+
+where $Q^* = Q + K^T R K \in \mathbb{R}^{n \times n}$ itself is positive definite and symmetric. The obtained matrix $P$ is 
+positive definite and symmetric. The matrices $Q$ and $R$ might be used for \textit{Step 1} to obatain the linear feedback
+matrix $K$ based on LQ-regulators.\\
+
+\textit{Step 3.} Find the largest possible $\alpha_1$ s.t $Kx \in \mathcal{U} \quad \forall x \in \Omega_{\alpha_1}$.\\
+
+\textit{Step 4.} Find the largest possible $\alpha \in (0,\alpha_1]$ s.t. $\{x_k \in \mathbb{R}^n \mid x_k^TPx_k \leq \alpha \}$ is an 
+inner approximation of the region of attraction of the closed loop dynamics of the linearly controlled system.
+
+\subsection*{Generalized S-procedure}
+In \textit{Step 3} and \textit{4} one tries to find the largest sublevel set of a given function. 
+
+
+
+
+\pagebreak
 \section{Exemplary Application}
 \label{sec:example}
-% \lipsum[1-2]
+
+\todo{Implementation?}
+
 
 \section{Conclusion \& Outlook}
 \label{sec:conclusion}
-% \lipsum[1-2]
 
+\todo{Briefly introduce the other usage of SOS covered by Allgoewer}
 
 
 \pagebreak

@@ -1,5 +1,10 @@
 \begin{thebibliography}{1}
 
+\bibitem{CHEN19981205}
+H.~Chen and F.~Allgöwer.
+\newblock A quasi-infinite horizon nonlinear model predictive control scheme with guaranteed stability.
+\newblock {\em Automatica}, 34(10):1205--1217, 1998.
+
 \bibitem{nmpcBible}
 Jürgen~Pannek Lars~Grüne.
 \newblock {\em Nonlinear Model Predicitve Control}.

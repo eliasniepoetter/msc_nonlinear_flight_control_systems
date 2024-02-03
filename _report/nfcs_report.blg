@@ -4,45 +4,45 @@ The top-level auxiliary file: nfcs_report.aux
 The style file: plain.bst
 Database file #1: references.bib
 Warning--empty publisher in RaffAllgoewer
-You've used 2 entries,
+You've used 3 entries,
             2118 wiz_defined-function locations,
-            512 strings with 4341 characters,
-and the built_in function-call counts, 748 in all, are:
-= -- 68
-> -- 30
+            520 strings with 4506 characters,
+and the built_in function-call counts, 1091 in all, are:
+= -- 102
+> -- 43
 < -- 2
-+ -- 12
-- -- 10
-* -- 50
-:= -- 120
-add.period$ -- 6
-call.type$ -- 2
-change.case$ -- 10
++ -- 18
+- -- 14
+* -- 77
+:= -- 176
+add.period$ -- 9
+call.type$ -- 3
+change.case$ -- 15
 chr.to.int$ -- 0
-cite$ -- 3
-duplicate$ -- 34
-empty$ -- 61
-format.name$ -- 10
-if$ -- 163
+cite$ -- 4
+duplicate$ -- 45
+empty$ -- 90
+format.name$ -- 14
+if$ -- 235
 int.to.chr$ -- 0
-int.to.str$ -- 2
-missing$ -- 4
-newline$ -- 13
-num.names$ -- 4
-pop$ -- 19
+int.to.str$ -- 3
+missing$ -- 5
+newline$ -- 18
+num.names$ -- 6
+pop$ -- 22
 preamble$ -- 1
-purify$ -- 9
+purify$ -- 13
 quote$ -- 0
-skip$ -- 25
+skip$ -- 33
 stack$ -- 0
-substring$ -- 38
-swap$ -- 12
+substring$ -- 71
+swap$ -- 13
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 4
+type$ -- 8
 warning$ -- 1
-while$ -- 6
-width$ -- 3
-write$ -- 24
+while$ -- 9
+width$ -- 4
+write$ -- 35
 (There was 1 warning)
