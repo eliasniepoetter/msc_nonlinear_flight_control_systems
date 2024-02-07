@@ -6,34 +6,34 @@ Database file #1: references.bib
 Warning--empty publisher in RaffAllgoewer
 You've used 4 entries,
             2118 wiz_defined-function locations,
-            525 strings with 4649 characters,
-and the built_in function-call counts, 1301 in all, are:
+            525 strings with 4652 characters,
+and the built_in function-call counts, 1324 in all, are:
 = -- 122
-> -- 50
+> -- 56
 < -- 2
-+ -- 21
-- -- 16
-* -- 85
-:= -- 211
-add.period$ -- 12
++ -- 23
+- -- 18
+* -- 87
+:= -- 214
+add.period$ -- 11
 call.type$ -- 4
-change.case$ -- 19
+change.case$ -- 20
 chr.to.int$ -- 0
 cite$ -- 5
 duplicate$ -- 52
 empty$ -- 112
-format.name$ -- 16
-if$ -- 281
+format.name$ -- 18
+if$ -- 285
 int.to.chr$ -- 0
 int.to.str$ -- 4
 missing$ -- 5
-newline$ -- 23
+newline$ -- 22
 num.names$ -- 8
-pop$ -- 30
+pop$ -- 32
 preamble$ -- 1
-purify$ -- 16
+purify$ -- 17
 quote$ -- 0
-skip$ -- 40
+skip$ -- 42
 stack$ -- 0
 substring$ -- 76
 swap$ -- 14
@@ -44,5 +44,5 @@ type$ -- 12
 warning$ -- 1
 while$ -- 11
 width$ -- 5
-write$ -- 45
+write$ -- 43
 (There was 1 warning)

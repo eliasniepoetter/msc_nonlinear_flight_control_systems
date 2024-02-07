@@ -6,7 +6,6 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
-\usepackage{graphicx}
 \usepackage{lmodern}
 \usepackage{siunitx}
 \usepackage{fancyhdr}
@@ -39,6 +38,7 @@
 \newacronym{mpc}{MPC}{Model Predictive Control}
 \newacronym{sos}{SOS}{Sum of Squares}
 \newacronym{ocp}{OCP}{Optimal Control Problem}
+\newacronym{sdp}{SDP}{Semidefinite Program}
 
 
  
@@ -227,15 +227,48 @@ matrix $K$ based on LQ-regulators.\\
 inner approximation of the region of attraction of the closed loop dynamics of the linearly controlled system.
 
 
-\subsection{Lyapunov's second method for stability}
+\subsection{Lyapunov's second method for stability} \todo{Source?}
+In order to estimate a region of attraction, Lyapunov's second method for stability is used. The method makes use of the concept of \textit{dissipativity}.
+Consider the dynamical system $f(x) = \dot{x}$ and a \textit{storage function} $V: \mathbb{R}^n \rightarrow \mathbb{R}$ where $\mathbb{R}^n$ denotes the state space.
+The system is asymptotically stable in the sense of Lyapunov if the following conditions hold:
+\begin{align}
+	V(x) &= 0 \text{ if and only if } x=0\\
+	V(x) &> 0 \text{ if and only if } x\neq0\\
+	\dot{V}(x) &= \nabla V \cdot f(x) < 0 \quad \forall x \neq 0
+\end{align}
+In that case, $V(x)$ is calles a \textit{Lyapunov function}. Note that these conditions are not sufficient to prove global asymptotical stability.
+For that to be the case, $V(x)$ also has to be radially unbounded.
 
 
+\subsection{\gls{sos} Programming \cite{cunis_loureiro2023}}
+\gls{sos} programming is used to \textit{verify} wether a given, potentially multivariate, polynomial $p(x) \in \mathbb{R}[x]$, where $\mathbb{R}[x]$ denotes
+the ring of polynomial in $x \in \mathbb{R}^n$ with real coefficients, is a sum-of-squares polynomial. A polynomial $p \in \mathbb{R}^n$ is sum-of-squares if
+there exists $q_1, \dots, q_m$ s.t.
 
-\subsection{\gls{sos} Programming}
-\todo{Intro to SOS}
+\begin{equation}
+	p(x)=\sum_{i=1}^m q_i^2(x)
+\end{equation}
+
+The set of \gls{sos} polynomials will be denoted by $\Sigma[x]$. If a polynomial is sum-of-squares, it is also a nonnegativ polynomial $p(x) \geq 0$.
+Subsequently, if we want to proof wether a polynomial is nonnegative or not, we can now relax this problem to the question, wether the the polynomial
+is sum-of-squares or not. The advantage of this relaxation over the orginal problem is that solving the problem to verify if a polynomial is 
+sum-of-squares can be done in polynomial time. Proofing if a polynomial is nonnegative is a NP-hard problem. The verification on whether a polynomial
+is sum-of-squares or not is done by solving a \gls{sdp}.\\
+
+\textbf{Lemma 1}. Let $p(x) \in \mathbb{R}[x]$ be a polynomial of degree $d$. Then, $p(x) \in \Sigma[x]$ if and only if there exists a symmetric
+matrix $Q \in \mathbb{S}^l$ being positive semidefinite (all eigenvalues of $Q$ are nonnegative) such that
+\begin{equation}
+	p(x)=z(x)^{\top} Q z(x)
+\end{equation}
+for some monomial vector $z(x) \in \mathbb{R}[x]^l$ with $\operatorname{deg}(z(x)) \leq \frac{d}{2}$.\\
+
+Using Lemma 1, we further relaxed the problem of verifying if a polynomial is sum-of-squares to the problem of finding a positive semidefinite matrix $Q$.
+This task is done via a \gls{sdp}. \todo{More details in SDP?}\\
+
+
 The following procedure, called \textit{Generalized S-procedure}, is used to solve the set containment problem:
 
-\begin{tcolorbox}[colback=gray!20, colframe=gray!80,title=Generalized S-procedure \cite{loureiro2023presentation},arc=0.2mm]        
+\begin{tcolorbox}[colback=gray!20, colframe=gray!80,title=Generalized S-procedure \cite{cunis_loureiro2023},arc=0.2mm]        
 Given $h, f_0, \ldots, f_r \in \mathbb{R}[x]$, if there exist $p \in \mathbb{R}[x]$, and $s_1, \ldots, s_f \in \Sigma[x]$ s.t.
 \begin{equation}
 	\text { ph }-\sum_{j=1}^r s_j f_j+f_0 \in \Sigma[x]
@@ -248,7 +281,7 @@ then the following set containment holds:
 
 
 \subsection{Sublevel set optimization}
-In \textit{Step 3} and \textit{4} one tries to find the largest sublevel set of a given function. These optimization problems
+In \textit{Step 3} and \textit{4} one tries to find the largest sublevel set of a given function satisfying certain constraints. These optimization problems
 can be formulated to one single problem. The idea is to setup a nonlinear root search for the parameter $\alpha$. An iterative 
 algorithm, e.g. a bisection algorithm \todo{short description of the algorithm}, is used to maximize the parameter. The problem can be formulated as follows:
 
@@ -279,7 +312,68 @@ The resulting constraints for the optimiztion are
 \label{sec:example}
 \todo{Implementation details? Multiple Shooting?}
 
+Based on an exemplary system a \gls{mpc} with terminal conditions is designed using the procedures described above. The exemplary system is the ball beam system. It consists of a ball rolling on a beam. The beams angle is controlled by a motor.
+Gravity acting on the ball accelerates it accoding to the angle of the beam. The system is described by the following equations of motion:
 
+\begin{equation}
+    0 = \left(\frac{J}{R^2} + m\right)\ddot{r} + mg\sin(\alpha) = - mr\dot{\alpha}^2
+\end{equation}
+
+
+States are chosen as
+\begin{equation}
+	x = \begin{bmatrix} r & \dot{r} & \alpha & \dot{\alpha} \end{bmatrix}^T
+\end{equation}
+
+and the input as
+\begin{equation}
+	u = \ddot{\alpha}
+\end{equation}
+
+
+\begin{align*}
+    \dot{x} = f(x,u) = \begin{bmatrix}
+        x_2 \\
+        m x_1 x_4^2 - m g \left(\frac{x_3^5}{120} - \frac{x_3^3}{6} + x_3\right) \cdot k \\
+        x_4 \\
+        u
+    \end{bmatrix}
+\end{align*}
+
+Note that the $\sin()$ term is approximated by a Taylor series epansion of degree five in order to obtain a polynomial system. The constant $k$ combines 
+the physical parameters of the system. 
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=\textwidth]{img/bb_states.png}
+		\caption{state space trajectories for defined control setups}
+		\label{pic:bb_state_space}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=\textwidth]{img/bb_time_x1x2.png}
+		\caption{trajectories for states $x_1$ and $x_2$}
+		\label{pic:bb_time_x1x2}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=\textwidth]{img/bb_time_x3x4.png}
+		\caption{trajectories for states $x_3$ and $x_4$}
+		\label{pic:bb_time_x3x4}
+	\end{center}
+\end{figure}
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=\textwidth]{img/bb_time_u.png}
+		\caption{trajectories for input $u$}
+		\label{pic:bb_time_u}
+	\end{center}
+\end{figure}
 
 
 

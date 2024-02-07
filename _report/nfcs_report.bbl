@@ -5,15 +5,14 @@ H.~Chen and F.~Allgöwer.
 \newblock A quasi-infinite horizon nonlinear model predictive control scheme with guaranteed stability.
 \newblock {\em Automatica}, 34(10):1205--1217, 1998.
 
+\bibitem{cunis_loureiro2023}
+Torbjørn Cunis and Renato Loureiro.
+\newblock Systems theoretical methods for flight control, 2023.
+
 \bibitem{nmpcBible}
 Jürgen~Pannek Lars~Grüne.
 \newblock {\em Nonlinear Model Predicitve Control}.
 \newblock Springer Cham, 2 edition, 2016.
-
-\bibitem{loureiro2023presentation}
-Renato Loureiro.
-\newblock Nonlinear sos programming.
-\newblock Presentation at the Seminar on System Theoretic Methods for Flight Control, November 2023.
 
 \bibitem{RaffAllgoewer}
 T.~Raff, C.~Ebenbauer, R.~Findeisen, and F.~Allgöwer.
