@@ -311,9 +311,13 @@ The resulting constraints for the optimiztion are
 \section{Exemplary Application}
 \label{sec:example}
 \todo{Implementation details? Multiple Shooting?}
+Based on an exemplary system a \gls{mpc} with terminal conditions is designed using the procedures described above. 
 
-Based on an exemplary system a \gls{mpc} with terminal conditions is designed using the procedures described above. The exemplary system is the ball beam system. It consists of a ball rolling on a beam. The beams angle is controlled by a motor.
-Gravity acting on the ball accelerates it accoding to the angle of the beam. The system is described by the following equations of motion:
+
+\subsection{Setup}
+The exemplary system is the ball beam system.
+It consists of a ball rolling on a beam. The beams angle is controlled by a motor. Gravity acting on the ball accelerates it accoding to the angle of the beam.
+The system is described by the following equations of motion:
 
 \begin{equation}
     0 = \left(\frac{J}{R^2} + m\right)\ddot{r} + mg\sin(\alpha) = - mr\dot{\alpha}^2
@@ -341,7 +345,40 @@ and the input as
 \end{align*}
 
 Note that the $\sin()$ term is approximated by a Taylor series epansion of degree five in order to obtain a polynomial system. The constant $k$ combines 
-the physical parameters of the system. 
+the physical parameters of the system. Table \ref{tbl:controler} gives an overview of the different \gls{mpc} controler setups used.
+
+\renewcommand{\arraystretch}{1.25}
+\begin{table}[ht]
+    \centering
+    \captionsetup{skip=0.25cm}
+    \caption{overview of additional terms}
+    \label{tbl:controler}
+    \begin{tabular}{|p{2cm}|p{4cm}|p{5.5cm}|}
+        \hline
+        \textbf{Controller} & \textbf{Name} &  \textbf{Explanation}\\
+        \hline
+        QIH & Quasi-Inifnite Horizon & terminal region + costs\\
+        \hline
+        TR & Terminal Region & just terminal region\\
+        \hline
+        TC & Terminal Constraint & terminal constraint to end in equilibrium\\
+        \hline
+        NTC & No Terminal Conditions & no terminal conditions at all\\
+        \hline
+    \end{tabular}
+\end{table}
+
+The time step for the closed loop simulation is set to $\Delta t_{\text{cl}} = \SI{0.01}{\second}$.  The time step for the \gls{mpc} is set to
+$\Delta t_{\text{mpc}} = \SI{0.05}{\second}$. The prediction horizon is set to $N = \SI{1}{\second}$. No noise is added to the states and the true
+model is known. The stage costs are chosen to
+
+\begin{equation}
+	F\left(x_{i \mid k}, u_{i \mid k}\right) = \frac{1}{2} \lVert x_{i \mid k} \rVert_2 + \frac{1}{2} \lVert u_{i \mid k} \rVert_2.
+\end{equation}
+
+
+\subsection{Results}
+
 
 \begin{figure}[h]
 	\begin{center}
