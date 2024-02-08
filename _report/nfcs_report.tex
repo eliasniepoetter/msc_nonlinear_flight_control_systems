@@ -421,7 +421,8 @@ design approach in mind, this result was also to expect. The \gls{mpc} of the QI
 	\end{center}
 \end{figure}
 
-Figure \ref{pic:bb_time_u} shows that the QIH and TR controller have overall the lowest input to the system. Furthermore, the QIH and TR controller have very similar
+Figure \ref{pic:bb_time_u} shows that the QIH and TR controller have overall the lowest input to the system which can be considered as more efficient. 
+Furthermore, the QIH and TR controller have very similar
 trajectories and behavior. The terminal costs don't seem to have an significant impact for this specific example. The black dots in all result figures show the
 switching point of the dual mode controller, so the point from where on the linear controller controls the system. The QIH controller enters the terminal region
 slightly earlier than the TR controller. 
@@ -432,7 +433,14 @@ slightly earlier than the TR controller.
 
 \todo{Briefly introduce the other usage of SOS covered by Allgoewer}
 
-
+This report covers the synthesis and exemplary application of terminal conditions for \gls{mpc} using \gls{sos} programming. The underlying theory as well as the 
+application is covered. \gls{sos} programmming is successfully used to estimate the terminal region for the \gls{mpc} design. The example covered shows that a 
+well desiged terminal region can lead to a more efficient control of the system. A drawback of the presented approach is the necessity of a system that is 
+stable around the origin. This approach is therefore not suitbale for systems with periodic limit cycles. \todo{add requirement to section \ref{sec:synTermCond}} It can further be quite difficult to obtain a 
+terminal region because of a dependency on the linear controller. Different linear controllers lead to different terminal regions. Obtaining a satisfying terminal
+region may be an iterative process. The presented approach is also limited to polynomial systems which can lead to the use of Taylor series expansions, as 
+shown in the exmaple. To give an outlook, in \cite{RaffAllgoewer} it is demonstrated that the finite horizon \gls{ocp} can be formulated as polynomial optimization problem and solved with \gls{sos} programs.
+It is shown that this can lead to significant performance improvements compared to solving the classical nonlinar optimization problem in \gls{mpc}. 
 
 
 
