@@ -83,6 +83,16 @@ The report first introduces the basics of \gls{mpc} in \ref{sec:mpc}. Continuing
 design focussing on \gls{sos} methods in \ref{sec:synTermCond}. Lastly, the methods presented are applied to the 
 ball beam system. The results are shown and discussed in \ref{sec:example}. \todo{reformulate Introduction}
 
+
+
+
+
+
+
+
+
+
+
 \section{Model Predictive Control}
 \label{sec:mpc}
 Model Predicitve Control is a flexible and powerful control strategy. It naturally handles nonlinearities constraints as
@@ -196,6 +206,14 @@ the tracking \gls{mpc} is a stabilizing \gls{mpc} for the error dynamics of the 
 the follwing. For more details see \cite{nmpcBible}. 
 
 
+
+
+
+
+
+
+
+
 \section{Synthesis of Terminal Conditions}
 \label{sec:synTermCond}
 Followed by the introduction of terminal conditions and their application in \gls{mpc}, the synthesis of terminal cost $E$, the
@@ -227,10 +245,11 @@ matrix $K$ based on LQ-regulators.\\
 inner approximation of the region of attraction of the closed loop dynamics of the linearly controlled system.
 
 
-\subsection{Lyapunov's second method for stability} \todo{Source?}
+\subsection{Lyapunov's second method for stability}
+\label{sec:lyapunov}
 In order to estimate a region of attraction, Lyapunov's second method for stability is used. The method makes use of the concept of \textit{dissipativity}.
 Consider the dynamical system $f(x) = \dot{x}$ and a \textit{storage function} $V: \mathbb{R}^n \rightarrow \mathbb{R}$ where $\mathbb{R}^n$ denotes the state space.
-The system is asymptotically stable in the sense of Lyapunov if the following conditions hold:
+The system is asymptotically stable in the sense of Lyapunov if the following conditions hold: \cite{cunis_loureiro2023}
 \begin{align}
 	V(x) &= 0 \text{ if and only if } x=0\\
 	V(x) &> 0 \text{ if and only if } x\neq0\\
@@ -263,10 +282,38 @@ matrix $Q \in \mathbb{S}^l$ being positive semidefinite (all eigenvalues of $Q$ 
 for some monomial vector $z(x) \in \mathbb{R}[x]^l$ with $\operatorname{deg}(z(x)) \leq \frac{d}{2}$.\\
 
 Using Lemma 1, we further relaxed the problem of verifying if a polynomial is sum-of-squares to the problem of finding a positive semidefinite matrix $Q$.
-This task is done via a \gls{sdp}. \todo{More details in SDP?}\\
+This task is done via a \gls{sdp}. \todo{More details in SDP?}
 
 
-The following procedure, called \textit{Generalized S-procedure}, is used to solve the set containment problem:
+
+\subsection{Sublevel set optimization}
+\todo{clarify notation}
+In \textit{Step 3} and \textit{4} one tries to find the largest sublevel set of a given function satisfying certain constraints. These optimization problems
+can be formulated to one single problem. The idea is to setup a nonlinear root search for the parameter $\alpha$. An iterative 
+algorithm, e.g. a bisection algorithm, is used to maximize the parameter. The problem can be formulated as follows:
+
+\begin{equation}
+\label{eq:sos_problem}
+\max\limits_{\alpha} \quad \text{Volume}\left(\{x \in \mathbb{R}^n \mid x^TPx \leq \alpha \}\right)
+\end{equation}
+
+The resulting constraints for the optimiztion are
+\begin{align}
+	s_{j} &\in \Sigma[x]\\
+	-s_{j}(-x^TPx + \alpha) + (K_i x + u_{\text{max},i}) &\in \Sigma[x]\\
+	-s_{j}(-x^TPx + \alpha) + (-K_i x - u_{\text{min},i}) &\in \Sigma[x]\\
+	V - \epsilon (x^Tx) &\in \Sigma[x]\\
+	s_j(V-\alpha) - \nabla V \cdot f - \epsilon (x^Tx) &\in \Sigma[x]
+\end{align}
+
+$\forall i \in [1,m]$ where $m$ is denoting the number of inputs to the system. Note that $K_i$ is the $i$-th row vector of the feedback matrix $K$. This enables
+asymetric input constraints $u_{\text{max},i}$ and $u_{\text{min},i}$. All $s$-multipliers with $j \in [0,r]$ where $r$ is the number of \gls{sos}-multipliers must 
+be sum-of-squares. Costraint (18) and (19) are base on \ref{sec:lyapunov}. These constraints ensure dissipativity of the system inside the found sublevel set and
+therefore asymptotical stability. The polynomial $V=x^TPx$ is the lyapunov function in that sense. Note that $V$ is indeed a lyapunov function because the matrix 
+$P$ is positive definite. According to \ref{sec:lyapunov} it is necessary to proof positive definiteness to ensure stability, instead of
+positive semidefiniteness. The term $\epsilon (x^Tx)$ ensures positive definiteness for (18) and (19) instead of just positive semidefiniteness which would follow
+from (18) and (19) being sum-of-squares. The constraints given above form a set containment problem. The following procedure, called \textit{Generalized S-procedure},
+is used to check if the set containment holds for some given $\alpha$. 
 
 \begin{tcolorbox}[colback=gray!20, colframe=gray!80,title=Generalized S-procedure \cite{cunis_loureiro2023},arc=0.2mm]        
 Given $h, f_0, \ldots, f_r \in \mathbb{R}[x]$, if there exist $p \in \mathbb{R}[x]$, and $s_1, \ldots, s_f \in \Sigma[x]$ s.t.
@@ -279,24 +326,8 @@ then the following set containment holds:
 \end{equation}
 \end{tcolorbox}
 
-
-\subsection{Sublevel set optimization}
-In \textit{Step 3} and \textit{4} one tries to find the largest sublevel set of a given function satisfying certain constraints. These optimization problems
-can be formulated to one single problem. The idea is to setup a nonlinear root search for the parameter $\alpha$. An iterative 
-algorithm, e.g. a bisection algorithm \todo{short description of the algorithm}, is used to maximize the parameter. The problem can be formulated as follows:
-
-\begin{equation}
-\label{eq:sos_problem}
-\max\limits_{\alpha} \quad \text{V}\left(\{x_k \in \mathbb{R}^n \mid x_k^TPx_k \leq \alpha \}\right)
-\end{equation}
-
-The resulting constraints for the optimiztion are
-\todo{Finish full problem formulation}
-\begin{align}
-	s_{i} &\in \Sigma[x]\\
-	-s_{i}(-x^TPx + \alpha_1) + (Kx + u_{\text{max},i}) &\in \Sigma[x]\\
-	-s_{N_u +i}(-x^TPx + \alpha_1) + (-Kx - u_{\text{min},i}) &\in \Sigma[x]
-\end{align}
+This procedure can be implemented inside a bisection algorithm to test the set containment for a given $\alpha$. That way, the optimization problem \eqref{eq:sos_problem}
+is solved.
 
 
 
@@ -307,7 +338,6 @@ The resulting constraints for the optimiztion are
 
 
 
-\pagebreak
 \section{Exemplary Application}
 \label{sec:example}
 \todo{Implementation details? Multiple Shooting?}
@@ -323,28 +353,18 @@ The system is described by the following equations of motion:
     0 = \left(\frac{J}{R^2} + m\right)\ddot{r} + mg\sin(\alpha) = - mr\dot{\alpha}^2
 \end{equation}
 
+States are chosen as $x = \begin{bmatrix} r & \dot{r} & \alpha & \dot{\alpha} \end{bmatrix}^T$ and the input as $u = \ddot{\alpha}$. The systems dynamics are given by
 
-States are chosen as
-\begin{equation}
-	x = \begin{bmatrix} r & \dot{r} & \alpha & \dot{\alpha} \end{bmatrix}^T
-\end{equation}
-
-and the input as
-\begin{equation}
-	u = \ddot{\alpha}
-\end{equation}
-
-
-\begin{align*}
+\begin{align}
     \dot{x} = f(x,u) = \begin{bmatrix}
         x_2 \\
         m x_1 x_4^2 - m g \left(\frac{x_3^5}{120} - \frac{x_3^3}{6} + x_3\right) \cdot k \\
         x_4 \\
         u
     \end{bmatrix}
-\end{align*}
+\end{align}
 
-Note that the $\sin()$ term is approximated by a Taylor series epansion of degree five in order to obtain a polynomial system. The constant $k$ combines 
+Note that the $\sin()$ term is approximated by a Taylor series epansion of degree five in order to obtain a polynomial system. \todo{answer Renatos question} The constant $k$ combines 
 the physical parameters of the system. Table \ref{tbl:controler} gives an overview of the different \gls{mpc} controler setups used.
 
 \renewcommand{\arraystretch}{1.25}
@@ -428,10 +448,15 @@ switching point of the dual mode controller, so the point from where on the line
 slightly earlier than the TR controller. 
 
 
+
+
+
+
+
+
+
 \section{Conclusion \& Outlook}
 \label{sec:conclusion}
-
-\todo{Briefly introduce the other usage of SOS covered by Allgoewer}
 
 This report covers the synthesis and exemplary application of terminal conditions for \gls{mpc} using \gls{sos} programming. The underlying theory as well as the 
 application is covered. \gls{sos} programmming is successfully used to estimate the terminal region for the \gls{mpc} design. The example covered shows that a 

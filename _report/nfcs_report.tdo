@@ -1,8 +1,6 @@
 \contentsline {todo}{reformulate Introduction}{1}{}%
-\contentsline {todo}{Source?}{4}{}%
 \contentsline {todo}{More details in SDP?}{4}{}%
-\contentsline {todo}{short description of the algorithm}{5}{}%
-\contentsline {todo}{Finish full problem formulation}{5}{}%
-\contentsline {todo}{Implementation details? Multiple Shooting?}{6}{}%
-\contentsline {todo}{Briefly introduce the other usage of SOS covered by Allgoewer}{7}{}%
+\contentsline {todo}{clarify notation}{4}{}%
+\contentsline {todo}{Implementation details? Multiple Shooting?}{5}{}%
+\contentsline {todo}{answer Renatos question}{6}{}%
 \contentsline {todo}{add requirement to section \ref {sec:synTermCond}}{7}{}%
