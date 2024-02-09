@@ -297,6 +297,8 @@ algorithm, e.g. a bisection algorithm, is used to maximize the parameter. The pr
 \max\limits_{\alpha} \quad \text{Volume}\left(\{x \in \mathbb{R}^n \mid x^TPx \leq \alpha \}\right)
 \end{equation}
 
+\todo{include defintion of volume}
+
 The resulting constraints for the optimiztion are
 \begin{align}
 	s_{j} &\in \Sigma[x]\\
@@ -305,6 +307,8 @@ The resulting constraints for the optimiztion are
 	V - \epsilon (x^Tx) &\in \Sigma[x]\\
 	s_j(V-\alpha) - \nabla V \cdot f - \epsilon (x^Tx) &\in \Sigma[x]
 \end{align}
+
+\todo{add $\forall j [1 ... 2m+1]$ and selecet the $j$ for corresponding constraint}
 
 $\forall i \in [1,m]$ where $m$ is denoting the number of inputs to the system. Note that $K_i$ is the $i$-th row vector of the feedback matrix $K$. This enables
 asymetric input constraints $u_{\text{max},i}$ and $u_{\text{min},i}$. All $s$-multipliers with $j \in [0,r]$ where $r$ is the number of \gls{sos}-multipliers must 
@@ -340,7 +344,7 @@ is solved.
 
 \section{Exemplary Application}
 \label{sec:example}
-\todo{Implementation details? Multiple Shooting?}
+
 Based on an exemplary system a \gls{mpc} with terminal conditions is designed using the procedures described above. 
 
 
@@ -364,7 +368,7 @@ States are chosen as $x = \begin{bmatrix} r & \dot{r} & \alpha & \dot{\alpha} \e
     \end{bmatrix}
 \end{align}
 
-Note that the $\sin()$ term is approximated by a Taylor series epansion of degree five in order to obtain a polynomial system. \todo{answer Renatos question} The constant $k$ combines 
+Note that the $\sin()$ term is approximated by a Taylor series epansion of degree five in order to obtain a polynomial system. \todo{answer Renatos question regarding limits of Taylor approx.} The constant $k$ combines 
 the physical parameters of the system. Table \ref{tbl:controler} gives an overview of the different \gls{mpc} controler setups used.
 
 \renewcommand{\arraystretch}{1.25}
@@ -397,8 +401,11 @@ model is known. The stage costs are chosen to
 	F\left(x_{i \mid k}, u_{i \mid k}\right) = \frac{1}{2} \lVert x_{i \mid k} \rVert_2 + \frac{1}{2} \lVert u_{i \mid k} \rVert_2.
 \end{equation}
 
+\todo{briefly describe implementation setup (casadi etc.)}
+
 
 \subsection{Results}
+\todo{add results of terminal condition synthesis}
 Figure \ref{pic:bb_state_space} to \ref{pic:bb_time_u} show the results of the simulations. Most obvious is the rather poor performance of the NTC controller.
 It has highest excitations especially in state $x_3 = \alpha$ and $x_4 = \dot{\alpha}$ (see fig. \ref{pic:bb_state_space}).
 
