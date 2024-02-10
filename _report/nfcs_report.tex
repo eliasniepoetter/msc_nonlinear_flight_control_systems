@@ -418,7 +418,27 @@ optimization problem is IPOPT \cite{Wächter2006}. IPOPT is a robust interior-po
 
 
 \subsection{Results}
-\todo{add results of terminal condition synthesis}
+In the following, the results of the simulations as well as the synthesis of the terminal conditions are presented.
+
+\subsubsection*{Synthesized terminal conditions}
+The steps described in \ref{sec:synTermCond} are applied to the ball beam system. Different linear controllers are designed based on the jacobian linearization.
+Figure \ref{pic:LQRvsPole} shows the resulting terminal region for two different linear controllers. The LQR offers a larger region of attraction and will be used
+for the QIH and TR controllers.
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{img/LQRvsPole.png}
+		\caption{comparison of the synthesized terminal region with a LQR controller and a pole placement}
+		\label{pic:LQRvsPole}
+	\end{center}
+\end{figure}
+
+Note that \ref{pic:LQRvsPole} shows the sliced terminal region for the states $r$ and $\dot{r}$. The $Q$ and $R$ matrix for the LQR controller are chosen
+as $Q = 0.25 \cdot \mathbf{I}^4$, where $\mathbf{I}^4$ is dnoting the $4\times 4$ identity matrix and $R = 1$. The matrices are the same as for Lyapunov
+equation in \textit{Step 2}.
+
+
+\subsubsection*{\gls{mpc} Performance Analysis}
 Figure \ref{pic:bb_state_space} to \ref{pic:bb_time_u} show the results of the simulations. Most obvious is the rather poor performance of the NTC controller.
 It has highest excitations especially in state $x_3 = \alpha$ and $x_4 = \dot{\alpha}$ (see fig. \ref{pic:bb_state_space}).
 
