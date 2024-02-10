@@ -32,6 +32,7 @@
 \usepackage{graphicx, subfigure}	
 	\graphicspath{{img/}}
 \usepackage[skip=2pt]{caption}
+\setlength{\belowcaptionskip}{-10pt}
  
 % Abkürzungen
 \usepackage{glossaries}
@@ -65,7 +66,16 @@
 \vskip 0.5cm
 
 \begin{abstract}
-	% \lipsum[1]
+
+This report presents a study on the design and implementation of finite horizon Nonlinear Model Predictive Control (NMPC) with terminal conditions.
+Furthermore, it details the process of synthesizing terminal conditions using sum-of-squares (SOS) methods to ensure stability guarantees for the closed-loop system.
+The implementation utilizes MATLAB, CasADi, and SOSOPT for numerical
+optimization and analysis. Results demonstrate the effectiveness of the proposed NMPC approach, showcasing stable and efficient control performance
+for the ball beam system.\\
+
+\noindent
+\textbf{Keywords:} Model Predictive Control, Sum-of-Squares, Terminal Conditions
+
 \end{abstract}
 
 \vskip 0.5cm
@@ -73,15 +83,16 @@
 % \begin{multicols}{2}
 
 \section{Introduction}
-The goal of the project is to combine the methods of \gls{sos} Programming and nonlinear \gls{mpc}.
-Based on an exemplary nonlinear dynamical system an \gls{mpc} is designed in such a way that it acts outside a specified
-region in the state space and drives it towards this region. The region is called \textit{terminal region}. Inside the
-terminal region a linear controller takes over, this concept is called \textit{Dual Mode Control}. \gls{sos} methods are 
-used to estimate the terminal region which is a \textit{region of attraction} of the closed loop dynamics of the linearly 
-controlled system.
-The report first introduces the basics of \gls{mpc} in \ref{sec:mpc}. Continuing with the concept of dual mode controller 
-design focussing on \gls{sos} methods in \ref{sec:synTermCond}. Lastly, the methods presented are applied to the 
-ball beam system. The results are shown and discussed in \ref{sec:example}. \todo{reformulate Introduction}
+The goal of the project is to utilize the methods of \gls{sos} Programming to enhance the design of nonlinear \gls{mpc}.
+\gls{mpc} is powerful control approach for nonlinear systems based on optimal control theory.
+Guaranteeing closed-loop stability of \gls{mpc} is a crucial aspect of the design and fundamental for all control systems.
+There exists different approaches to guarantee closed-loop stability of \gls{mpc}, from which some are presented in this report.
+Those presented rely on the conecpt of \textit{terminal conditions}. These terminal conditions, consisting of a \textit{terminal region} 
+and \textit{terminal costs}, have to fullfill certain properties in order to guarantee stability. The terminal region has to be an invariant set.
+It is a \textit{region of attraction} of the closed-loop system. The terminal costs have to be a \textit{Lyapunov function} for the closed-loop system.
+The synthesis of such terminal conditions fullfilling the said properties is done via \gls{sos} methods. The report first introduces the basics of \gls{mpc} in \ref{sec:mpc}. Continuing with the synthesis of terminal conditions for \gls{mpc},
+focussing on \gls{sos} methods in \ref{sec:synTermCond}. Lastly, the methods presented are applied to the 
+ball beam system. The results are shown and discussed in \ref{sec:example}.
 
 
 
@@ -221,7 +232,8 @@ terminal region $\mathcal{E}$ and the locally stabilizing linear controller $\va
 on \cite{CHEN19981205}. This section draws the connection to \gls{sos} programming. The procedure is as follows:\\
 
 \textit{Step 1.} Solve the linear control problem based on the jacobian linearization of the nonlinear system and obtain the feedback
-matrix $K$.\\
+matrix $K$. Note that it is required for the system to be stabilizable around the origin. \footnote{A system is said to be stabilizable if
+all uncontrollable states are stable by themself or vice versa defined, all unstable states are controllable \cite{lunze2016regelungstechnik}}\\
 
 \textit{Step 2.} Choose a constant $\kappa \in [0,\infty)$ satisfying
 \begin{equation}
@@ -326,7 +338,6 @@ then the following set containment holds:
 
 The verification of the set containment can be implemented inside a bisection algorithm to test the containment for a given $\alpha$. That way, the optimization problem \eqref{eq:sos_problem}
 is solved.
-
 
 
 
@@ -475,7 +486,7 @@ design approach in mind, this result was also to expect. The \gls{mpc} of the QI
 
 \begin{figure}[h]
 	\begin{center}
-		\includegraphics[width=\textwidth]{img/bb_time_u.png}
+		\includegraphics[width=0.75\textwidth]{img/bb_time_u.png}
 		\caption{trajectories for input $u$}
 		\label{pic:bb_time_u}
 	\end{center}
@@ -501,10 +512,11 @@ slightly earlier than the TR controller.
 This report covers the synthesis and exemplary application of terminal conditions for \gls{mpc} using \gls{sos} programming. The underlying theory as well as the 
 application is covered. \gls{sos} programmming is successfully used to estimate the terminal region for the \gls{mpc} design. The example covered shows that a 
 well desiged terminal region can lead to a more efficient control of the system. A drawback of the presented approach is the necessity of a system that is 
-stable around the origin. This approach is therefore not suitbale for systems with periodic limit cycles. \todo{add requirement to section \ref{sec:synTermCond}} It can further be quite difficult to obtain a 
+stable around the origin. This approach is therefore not suitbale for systems with periodic limit cycles. It can further be quite difficult to obtain a 
 terminal region because of a dependency on the linear controller. Different linear controllers lead to different terminal regions. Obtaining a satisfying terminal
 region may be an iterative process. The presented approach is also limited to polynomial systems which can lead to the use of Taylor series expansions, as 
-shown in the exmaple. To give an outlook, in \cite{RaffAllgoewer} it is demonstrated that the finite horizon \gls{ocp} can be formulated as polynomial optimization problem and solved with \gls{sos} programs.
+shown in the exmaple. To give an outlook for possible improvements, instead of optimizing the sublevel set for a fixed shape defined by $P$ a $V-s$ iteration could be implemented. 
+Using such an approach could allow for a more flexible terminal region, not restricted by to a shape that depends on the linear controller. Furthermore, in \cite{RaffAllgoewer} it is demonstrated that the finite horizon \gls{ocp} can be formulated as polynomial optimization problem and solved with \gls{sos} programs.
 It is shown that this can lead to significant performance improvements compared to solving the classical nonlinar optimization problem in \gls{mpc}. 
 
 
@@ -514,8 +526,8 @@ It is shown that this can lead to significant performance improvements compared 
 \bibliography{references}
 \bibliographystyle{plain}
 
-\pagebreak
-\listoftodos
+% \pagebreak
+% \listoftodos
 
 % \end{multicols}
 \end{document}

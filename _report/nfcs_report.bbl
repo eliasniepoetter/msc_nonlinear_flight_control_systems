@@ -24,6 +24,12 @@ Renato Loureiro.
 \newblock Nonlinear sos programming.
 \newblock Presentation at the Seminar on System Theoretic Methods for Flight Control, November 2023.
 
+\bibitem{lunze2016regelungstechnik}
+Jan Lunze.
+\newblock {\em Regelungstechnik 2: Mehrgrößensysteme, Digitale Regelung}.
+\newblock Springer Vieweg, Berlin, Heidelberg, 9 edition, 2016.
+\newblock Published on October 1, 2016.
+
 \bibitem{RaffAllgoewer}
 T.~Raff, C.~Ebenbauer, R.~Findeisen, and F.~Allgöwer.
 \newblock Nonlinear model predictive control and sum of squares techniques.
