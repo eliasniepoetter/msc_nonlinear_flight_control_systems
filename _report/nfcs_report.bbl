@@ -33,4 +33,9 @@ T.~Raff, C.~Ebenbauer, R.~Findeisen, and F.~Allgöwer.
 Peter Seiler.
 \newblock Sosopt: A toolbox for polynomial optimization, 2013.
 
+\bibitem{Wächter2006}
+Andreas W{\"a}chter and Lorenz~T. Biegler.
+\newblock On the implementation of an interior-point filter line-search algorithm for large-scale nonlinear programming.
+\newblock {\em Mathematical Programming}, 106(1):25--57, Mar 2006.
+
 \end{thebibliography}

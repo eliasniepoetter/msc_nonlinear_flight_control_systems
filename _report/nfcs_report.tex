@@ -412,6 +412,9 @@ model is known. The stage costs are chosen to
 The example is implemented in MATLAB R2023b.  The temrinal conditions are synthesized with help of the open-source software package
 SOSOPT \cite{seiler2013sosopt}. SOSOPT is a MATLAB toolbox for solving sum-of-squares problems. It is used to verify the set containment
 described in \eqref{eq:sos_problem}. The \gls{mpc} is imeplemented with the help of the open-source software package CasADi \cite{Andersson2019}.
+CasADi is software framework for numerical optimization, especially suited for optimal control and therefore \gls{mpc}. The closed simulation is implemented
+via a simple Euler integration scheme. The optimal control problem is solved through a multiple shooting method. The solver used for the nonlinaer 
+optimization problem is IPOPT \cite{Wächter2006}. IPOPT is a robust interior-point solver that can be interfaced with CasADi.
 
 
 \subsection{Results}
