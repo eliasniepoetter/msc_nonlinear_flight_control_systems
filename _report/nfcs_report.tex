@@ -282,12 +282,11 @@ matrix $Q \in \mathbb{S}^l$ being positive semidefinite (all eigenvalues of $Q$ 
 for some monomial vector $z(x) \in \mathbb{R}[x]^l$ with $\operatorname{deg}(z(x)) \leq \frac{d}{2}$.\\
 
 Using Lemma 1, we further relaxed the problem of verifying if a polynomial is sum-of-squares to the problem of finding a positive semidefinite matrix $Q$.
-This task is done via a \gls{sdp}. \todo{More details in SDP?}
+This task is done via a \gls{sdp}.
 
 
 
 \subsection{Sublevel set optimization}
-\todo{clarify notation}
 In \textit{Step 3} and \textit{4} one tries to find the largest sublevel set of a given function satisfying certain constraints. These optimization problems
 can be formulated to one single problem. The idea is to setup a nonlinear root search for the parameter $\alpha$. An iterative 
 algorithm, e.g. a bisection algorithm, is used to maximize the parameter. The problem can be formulated as follows:
@@ -297,29 +296,24 @@ algorithm, e.g. a bisection algorithm, is used to maximize the parameter. The pr
 \max\limits_{\alpha} \quad \text{Volume}\left(\{x \in \mathbb{R}^n \mid x^TPx \leq \alpha \}\right)
 \end{equation}
 
-\todo{include defintion of volume}
-
 The resulting constraints for the optimiztion are
 \begin{align}
-	s_{j} &\in \Sigma[x]\\
-	-s_{j}(-x^TPx + \alpha) + (K_i x + u_{\text{max},i}) &\in \Sigma[x]\\
-	-s_{j}(-x^TPx + \alpha) + (-K_i x - u_{\text{min},i}) &\in \Sigma[x]\\
+	s_{j} &\in \Sigma[x] \quad \forall j [1 \dots 2m+1]\\
+	-s_{1 \dots m}(-x^TPx + \alpha) + (K_i x + u_{\text{max},i}) &\in \Sigma[x] \quad \forall i \in [1,m]\\
+	-s_{m+1 \dots 2m}(-x^TPx + \alpha) + (-K_i x - u_{\text{min},i}) &\in \Sigma[x] \quad \forall i \in [1,m]\\
 	V - \epsilon (x^Tx) &\in \Sigma[x]\\
-	s_j(V-\alpha) - \nabla V \cdot f - \epsilon (x^Tx) &\in \Sigma[x]
+	s_{2m+1}(V-\alpha) - \nabla V \cdot f - \epsilon (x^Tx) &\in \Sigma[x]
 \end{align}
 
-\todo{add $\forall j [1 ... 2m+1]$ and selecet the $j$ for corresponding constraint}
-
-$\forall i \in [1,m]$ where $m$ is denoting the number of inputs to the system. Note that $K_i$ is the $i$-th row vector of the feedback matrix $K$. This enables
-asymetric input constraints $u_{\text{max},i}$ and $u_{\text{min},i}$. All $s$-multipliers with $j \in [0,r]$ where $r$ is the number of \gls{sos}-multipliers must 
-be sum-of-squares. Costraint (18) and (19) are base on \ref{sec:lyapunov}. These constraints ensure dissipativity of the system inside the found sublevel set and
+where $m$ is denoting the number of inputs to the system. Note that $K_i$ is the $i$-th row vector of the feedback matrix $K$. This enables
+asymetric input constraints $u_{\text{max},i}$ and $u_{\text{min},i}$. Costraint (18) and (19) are base on \ref{sec:lyapunov}. These constraints ensure dissipativity of the system inside the found sublevel set and
 therefore asymptotical stability. The polynomial $V=x^TPx$ is the lyapunov function in that sense. Note that $V$ is indeed a lyapunov function because the matrix 
 $P$ is positive definite. According to \ref{sec:lyapunov} it is necessary to proof positive definiteness to ensure stability, instead of
 positive semidefiniteness. The term $\epsilon (x^Tx)$ ensures positive definiteness for (18) and (19) instead of just positive semidefiniteness which would follow
-from (18) and (19) being sum-of-squares. The constraints given above form a set containment problem. The following procedure, called \textit{Generalized S-procedure},
-is used to check if the set containment holds for some given $\alpha$. 
+from (18) and (19) being sum-of-squares. The constraints given above form a set containment problem. The setup of the constraints and the problem are based on the
+following procedure, called \textit{Generalized S-procedure}.
 
-\begin{tcolorbox}[colback=gray!20, colframe=gray!80,title=Generalized S-procedure \cite{cunis_loureiro2023},arc=0.2mm]        
+\begin{tcolorbox}[colback=gray!20, colframe=gray!80,title=Generalized S-procedure \cite{loureiro2023presentation},arc=0.2mm]        
 Given $h, f_0, \ldots, f_r \in \mathbb{R}[x]$, if there exist $p \in \mathbb{R}[x]$, and $s_1, \ldots, s_f \in \Sigma[x]$ s.t.
 \begin{equation}
 	\text { ph }-\sum_{j=1}^r s_j f_j+f_0 \in \Sigma[x]
@@ -330,7 +324,7 @@ then the following set containment holds:
 \end{equation}
 \end{tcolorbox}
 
-This procedure can be implemented inside a bisection algorithm to test the set containment for a given $\alpha$. That way, the optimization problem \eqref{eq:sos_problem}
+The verification of the set containment can be implemented inside a bisection algorithm to test the containment for a given $\alpha$. That way, the optimization problem \eqref{eq:sos_problem}
 is solved.
 
 
@@ -348,7 +342,7 @@ is solved.
 Based on an exemplary system a \gls{mpc} with terminal conditions is designed using the procedures described above. 
 
 
-\subsection{Setup}
+\subsection{Setup and Implementation}
 The exemplary system is the ball beam system.
 It consists of a ball rolling on a beam. The beams angle is controlled by a motor. Gravity acting on the ball accelerates it accoding to the angle of the beam.
 The system is described by the following equations of motion:
@@ -368,8 +362,10 @@ States are chosen as $x = \begin{bmatrix} r & \dot{r} & \alpha & \dot{\alpha} \e
     \end{bmatrix}
 \end{align}
 
-Note that the $\sin()$ term is approximated by a Taylor series epansion of degree five in order to obtain a polynomial system. \todo{answer Renatos question regarding limits of Taylor approx.} The constant $k$ combines 
-the physical parameters of the system. Table \ref{tbl:controler} gives an overview of the different \gls{mpc} controler setups used.
+Note that the $\sin()$ term is approximated by a Taylor series epansion of degree five in order to obtain a polynomial system.
+The Taylor approximation for the $\sin()$ only holds in a certain viscinity around the origin. In the case demonstrated, the simulation is terminated when
+the angle of the beam $\alpha$ is $|\SI{90}{\degree}|$. In the interval $[-\SI{90}{\degree}, \SI{90}{\degree}]$ the approximation is valid.
+The constant $k$ combines the physical parameters of the system. Table \ref{tbl:controler} gives an overview of the different \gls{mpc} controler setups used.
 
 \renewcommand{\arraystretch}{1.25}
 \begin{table}[ht]
@@ -377,7 +373,7 @@ the physical parameters of the system. Table \ref{tbl:controler} gives an overvi
     \captionsetup{skip=0.25cm}
     \caption{overview of additional terms}
     \label{tbl:controler}
-    \begin{tabular}{|p{2cm}|p{4cm}|p{5.5cm}|}
+    \begin{tabular}{|p{2cm}|p{3.75cm}|p{5.75cm}|}
         \hline
         \textbf{Controller} & \textbf{Name} &  \textbf{Explanation}\\
         \hline
@@ -385,12 +381,23 @@ the physical parameters of the system. Table \ref{tbl:controler} gives an overvi
         \hline
         TR & Terminal Region & just terminal region\\
         \hline
-        TC & Terminal Constraint & terminal constraint to end in equilibrium\\
+        TC & Terminal Constraint & terminal constraint ends in equil.\\
         \hline
         NTC & No Terminal Conditions & no terminal conditions at all\\
         \hline
     \end{tabular}
 \end{table}
+
+\textbf{Remark 1.} In general, it might not be the case that the simulation temrinates before the Taylor approximation is not valid anymore.
+This could lead to an additional constraints for the sublevel set optimization \eqref{eq:sos_problem}
+
+\begin{align}
+	-s_{1 \dots l}(-x^TPx + \alpha) + (x_{n} + \gamma_{\text{max},r}) \in \Sigma[x] \quad \forall l \in [1,r] \\
+	-s_{1 \dots l}(-x^TPx + \alpha) + (-x_{n} - \gamma_{\text{min},r}) \in \Sigma[x] \quad \forall l \in [1,r]
+\end{align}
+
+where $\gamma_{\text{max},r}$ and $\gamma_{\text{min},r}$ are the bounds of the interval where the Taylor approximation holds for a state $x_n$.
+The number of constraints depends on the number of Taylor approximations $r$ used.\\
 
 The TC and NTC controller consists just of the \gls{mpc}. The QIH and TR controller have linear controller which takes over as soon as they enter the terminal region.
 The time step for the closed loop simulation is set to $\Delta t_{\text{cl}} = \SI{0.01}{\second}$.  The time step for the \gls{mpc} is set to
@@ -401,7 +408,10 @@ model is known. The stage costs are chosen to
 	F\left(x_{i \mid k}, u_{i \mid k}\right) = \frac{1}{2} \lVert x_{i \mid k} \rVert_2 + \frac{1}{2} \lVert u_{i \mid k} \rVert_2.
 \end{equation}
 
-\todo{briefly describe implementation setup (casadi etc.)}
+\subsection{Implementation Details}
+The example is implemented in MATLAB R2023b.  The temrinal conditions are synthesized with help of the open-source software package
+SOSOPT \cite{seiler2013sosopt}. SOSOPT is a MATLAB toolbox for solving sum-of-squares problems. It is used to verify the set containment
+described in \eqref{eq:sos_problem}. The \gls{mpc} is imeplemented with the help of the open-source software package CasADi \cite{Andersson2019}.
 
 
 \subsection{Results}

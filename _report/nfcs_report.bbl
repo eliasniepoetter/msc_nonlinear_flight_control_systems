@@ -1,5 +1,10 @@
 \begin{thebibliography}{1}
 
+\bibitem{Andersson2019}
+Joel A~E Andersson, Joris Gillis, Greg Horn, James~B Rawlings, and Moritz Diehl.
+\newblock {CasADi} -- {A} software framework for nonlinear optimization and optimal control.
+\newblock {\em Mathematical Programming Computation}, 11(1):1--36, 2019.
+
 \bibitem{CHEN19981205}
 H.~Chen and F.~Allgöwer.
 \newblock A quasi-infinite horizon nonlinear model predictive control scheme with guaranteed stability.
@@ -14,9 +19,18 @@ Jürgen~Pannek Lars~Grüne.
 \newblock {\em Nonlinear Model Predicitve Control}.
 \newblock Springer Cham, 2 edition, 2016.
 
+\bibitem{loureiro2023presentation}
+Renato Loureiro.
+\newblock Nonlinear sos programming.
+\newblock Presentation at the Seminar on System Theoretic Methods for Flight Control, November 2023.
+
 \bibitem{RaffAllgoewer}
 T.~Raff, C.~Ebenbauer, R.~Findeisen, and F.~Allgöwer.
-\newblock {\em Nonlinear Model Predictive Control and Sum of Squares Techniques}, volume~10, pages 325--344.
-\newblock 07 2007.
+\newblock Nonlinear model predictive control and sum of squares techniques.
+\newblock {\em Fast Motions in Biomechanics and Robotics, M. Diehl and K. Mombaur (eds.)}, 10:325--344, 07 2007.
+
+\bibitem{seiler2013sosopt}
+Peter Seiler.
+\newblock Sosopt: A toolbox for polynomial optimization, 2013.
 
 \end{thebibliography}
