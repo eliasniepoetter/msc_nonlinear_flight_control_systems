@@ -438,7 +438,7 @@ for the QIH and TR controllers.
 
 \begin{figure}[h]
 	\begin{center}
-		\includegraphics[width=0.5\textwidth]{img/LQRvsPole.png}
+		\includegraphics[width=\textwidth]{img/lqr_vs_pole.png}
 		\caption{comparison of the synthesized terminal region with a LQR controller and a pole placement}
 		\label{pic:LQRvsPole}
 	\end{center}
@@ -451,7 +451,9 @@ equation in \textit{Step 2}.
 
 \subsubsection*{\gls{mpc} Performance Analysis}
 Figure \ref{pic:bb_state_space} to \ref{pic:bb_time_u} show the results of the simulations. Most obvious is the rather poor performance of the NTC controller.
-It has highest excitations especially in state $x_3 = \alpha$ and $x_4 = \dot{\alpha}$ (see fig. \ref{pic:bb_state_space}).
+It has highest excitations especially in state $x_3 = \alpha$ and $x_4 = \dot{\alpha}$ (see fig. \ref{pic:bb_state_space}). Compared to the other controllers, the NTC controller also takes longest to fully converge to the equilibrium. However, the NTC controller is still able to
+stabilize the system. The most performant controller is the TC controller. It has the largest occuring input to the systems  and the fastest covergence.
+This result was to expect, because the TC controller (the \gls{mpc}) has to bring the system to the equilibrium in the given time horizon of $\SI{1}{\second}$. 
 
 \begin{figure}[h]
 	\begin{center}
@@ -460,10 +462,6 @@ It has highest excitations especially in state $x_3 = \alpha$ and $x_4 = \dot{\a
 		\label{pic:bb_state_space}
 	\end{center}
 \end{figure}
-
-Compared to the other controllers, the NTC controller also takes longest to fully converge to the equilibrium. However, the NTC controller is still able to
-stabilize the system. The most performant controller is the TC controller. It has the largest occuring input to the systems  and the fastest covergence.
-This result was to expect, because the TC controller (the \gls{mpc}) has to bring the system to the equilibrium in the given time horizon of $\SI{1}{\second}$. 
 
 \begin{figure}[h]
 	\begin{center}
@@ -483,6 +481,11 @@ This result was to expect, because the TC controller (the \gls{mpc}) has to brin
 
 The QIH controller and the TR controller show similar performance. Compared to the NTC and TC controller, their perofemance is in between. With their respective 
 design approach in mind, this result was also to expect. The \gls{mpc} of the QIH and TR controller just has to get the system into the terminal region.
+Figure \ref{pic:bb_time_u} shows that the QIH and TR controller have overall the lowest input to the system which can be considered as more efficient. 
+Furthermore, the QIH and TR controller have very similar
+trajectories and behavior. The terminal costs don't seem to have an significant impact for this specific example. The black dots in all result figures show the
+switching point of the dual mode controller, so the point from where on the linear controller controls the system. The QIH controller enters the terminal region
+slightly earlier than the TR controller. 
 
 \begin{figure}[h]
 	\begin{center}
@@ -492,11 +495,6 @@ design approach in mind, this result was also to expect. The \gls{mpc} of the QI
 	\end{center}
 \end{figure}
 
-Figure \ref{pic:bb_time_u} shows that the QIH and TR controller have overall the lowest input to the system which can be considered as more efficient. 
-Furthermore, the QIH and TR controller have very similar
-trajectories and behavior. The terminal costs don't seem to have an significant impact for this specific example. The black dots in all result figures show the
-switching point of the dual mode controller, so the point from where on the linear controller controls the system. The QIH controller enters the terminal region
-slightly earlier than the TR controller. 
 
 
 
@@ -506,6 +504,7 @@ slightly earlier than the TR controller.
 
 
 
+\pagebreak
 \section{Conclusion \& Outlook}
 \label{sec:conclusion}
 

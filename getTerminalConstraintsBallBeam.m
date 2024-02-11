@@ -55,9 +55,9 @@ C = eye(4);
 D = zeros(4, 1);
 
 % place poles
-% p = [-2,-1,-0.5,-0.75];
-% K = place(A,B,p);
-% Acl = A-B*K;
+p = [-3,-2.5,-1.5,-0.75];
+K = place(A,B,p);
+Acl = A-B*K;
 
 % LQR design
 Q = [2,0,0,0;
@@ -66,14 +66,12 @@ Q = [2,0,0,0;
     0,0,0,0.1];
 R = 1;
 
-K = lqr(A,B,Q,R);
-Acl = A-B*K;
+% K = lqr(A,B,Q,R);
+% Acl = A-B*K;
 
 vdp_linearized = ss(A, B, C, D);
-vdp_poles = pole(vdp_linearized);
-
 vdp_linearized_placed = ss(Acl,B,C,D);
-vdp_poles_placed = pole(vdp_linearized_placed);
+
 
 % plot step responses for controlled and uncontrolled system
 figure;

@@ -133,9 +133,9 @@ w_closed_normalized = w_closed ./ magnitude_closed;
 figure;
 hold on;
 title('State Trajectory');
-plot(x1, x2);
-plot(x1lin,x2lin);
-plot(x1ol,x2ol)
+% plot(x1, x2);
+% plot(x1lin,x2lin);
+% plot(x1ol,x2ol)
 [C,h] = pcontour(V, alpha, 10*[-1 1 -1 1]);
 % quiver(x11, x22, v_normalized, w_normalized, 'AutoScale', 'on', 'AutoScaleFactor', 0.5);
 quiver(x11, x22, v_normalized, w_closed_normalized, 'AutoScale', 'on', 'AutoScaleFactor', 2);
@@ -146,6 +146,8 @@ legend('NMPC trajectory', 'linear controller', 'open loop', 'terminal region', '
 axis equal;
 hold off;
 
+
+%%
 
 figure;
 tiledlayout(3, 1);
