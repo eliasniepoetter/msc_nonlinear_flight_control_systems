@@ -1,4 +1,4 @@
-\documentclass[10pt,a4paper]{article}
+\documentclass[10pt,a4paper,titlepage]{article}
 \usepackage[left=4cm,right=4cm,top=3.5cm,bottom=1.5cm]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
@@ -57,11 +57,58 @@
 
 %----------------------------------------------------------------------
 
-\begin{center}
-	\LARGE{\textbf{Systems Theory Project Report}}\\[0.25em]
-	\normalsize\textbf{Nonlinear Model Predictive Control Design}\\[0.25em]
-	\normalsize{Elias Niepötter (3684096)}
-\end{center}
+% \begin{center}
+% 	\LARGE{\textbf{Systems Theory Project Report}}\\[0.25em]
+% 	\normalsize\textbf{Nonlinear Model Predictive Control Design}\\[0.25em]
+% 	\normalsize{Elias Niepötter (3684096)}
+% \end{center}
+
+\begin{titlepage}
+	
+	\begin{center}
+        \vspace*{1cm}
+            
+        \huge
+        \textbf{Systems Theory Project Report}
+            
+        \vspace{0.25cm}
+        \LARGE
+        Nonlinear Model Predictive Control Design
+            
+        \vspace{1.5cm}
+            
+
+		\Large
+		by\\
+        \textbf{Elias Niepötter}\\
+		3684096
+
+		\vspace{2.5cm}
+
+		\large
+		\begin{align*}
+			\text{Study Progam}&: \text{M.Sc. Aerospace Engineering}\\[0pt]
+			\text{Module}&: \text{Nonlinear Flight Control Systems}\\[0pt]
+			\text{Supervisor}&: \text{Dr.-Ing. Torbjørn Cunis}
+		\end{align*}
+
+		% \vspace{1cm}
+		% \includegraphics[width=0.3\textwidth]{img/unilogo.pdf}
+
+        \vfill
+
+		\large
+		In cooperation with\\%[0pt]
+		Nico Holzinger
+            
+        \vspace{0.8cm}
+            
+        \large
+        Institute of Flight Mechanics and Control\\
+        University of Stuttgart\\
+        \today
+	\end{center}
+\end{titlepage}
 
 \vskip 0.5cm
 
@@ -463,7 +510,7 @@ This result was to expect, because the TC controller (the \gls{mpc}) has to brin
 	\end{center}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[h!]
 	\begin{center}
 		\includegraphics[width=\textwidth]{img/bb_time_x1x2.png}
 		\caption{trajectories for states $x_1$ and $x_2$}
@@ -471,7 +518,7 @@ This result was to expect, because the TC controller (the \gls{mpc}) has to brin
 	\end{center}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[h!]
 	\begin{center}
 		\includegraphics[width=\textwidth]{img/bb_time_x3x4.png}
 		\caption{trajectories for states $x_3$ and $x_4$}
@@ -487,7 +534,7 @@ trajectories and behavior. The terminal costs don't seem to have an significant 
 switching point of the dual mode controller, so the point from where on the linear controller controls the system. The QIH controller enters the terminal region
 slightly earlier than the TR controller. 
 
-\begin{figure}[h]
+\begin{figure}[h!]
 	\begin{center}
 		\includegraphics[width=0.75\textwidth]{img/bb_time_u.png}
 		\caption{trajectories for input $u$}
@@ -504,7 +551,9 @@ slightly earlier than the TR controller.
 
 
 
-\pagebreak
+
+
+\newpage
 \section{Conclusion \& Outlook}
 \label{sec:conclusion}
 
