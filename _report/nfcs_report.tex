@@ -19,6 +19,7 @@
 \usepackage{enumitem}
 \usepackage{varwidth}
 \usepackage{todonotes}
+\usepackage{bbm}
 
 % Setup SI units
 \sisetup{locale=DE}
@@ -348,11 +349,14 @@ This task is done via a \gls{sdp}.
 \subsection{Sublevel set optimization}
 In \textit{Step 3} and \textit{4} one tries to find the largest sublevel set of a given function satisfying certain constraints. These optimization problems
 can be formulated to one single problem. The idea is to setup a nonlinear root search for the parameter $\alpha$. An iterative 
-algorithm, e.g. a bisection algorithm, is used to maximize the parameter. The problem can be formulated as follows:
+algorithm, e.g. a bisection algorithm, is used to maximize the volume of the sublevel set which is achieved by maximising the parameter $\alpha$. The volume
+$\operatorname{vol}\left( \Omega \right)$ of a set $\Omega$ is defined as $\operatorname{vol}(A)=\int_{\mathbb{R}^n} \mathbbm{1}_A(\mathbf{x}) d \mathbf{x}$
+where $\mathbbm{1}_A : \mathbb{R}^n \rightarrow \mathbb{R}$ is defined by $\mathbbm{1}_A(x) = 1$ if $x \in \Omega$, otherwise $\mathbbm{1}_A(x) = 0$.
+The problem can be formulated as follows:
 
 \begin{equation}
 \label{eq:sos_problem}
-\max\limits_{\alpha} \quad \text{Volume}\left(\{x \in \mathbb{R}^n \mid x^TPx \leq \alpha \}\right)
+\max\limits_{\alpha} \quad \operatorname{vol}\left(\{x \in \mathbb{R}^n \mid x^TPx \leq \alpha \}\right)
 \end{equation}
 
 The resulting constraints for the optimiztion are
