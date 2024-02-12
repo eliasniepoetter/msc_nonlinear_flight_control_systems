@@ -131,7 +131,7 @@ for the ball beam system.\\
 
 \section{Introduction}
 The goal of the project is to utilize the methods of \gls{sos} Programming to enhance the design of nonlinear \gls{mpc}.
-\gls{mpc} is powerful control approach for nonlinear systems based on optimal control theory.
+\gls{mpc} is a powerful control approach for nonlinear systems based on optimal control theory.
 Guaranteeing closed-loop stability of \gls{mpc} is a crucial aspect of the design and fundamental for all control systems.
 There exists different approaches to guarantee closed-loop stability of \gls{mpc}, from which some are presented in this report.
 Those presented rely on the conecpt of \textit{terminal conditions}. These terminal conditions, consisting of a \textit{terminal region} 
@@ -153,7 +153,7 @@ ball beam system. The results are shown and discussed in \ref{sec:example}.
 
 \section{Model Predictive Control}
 \label{sec:mpc}
-Model Predicitve Control is a flexible and powerful control strategy. It naturally handles nonlinearities constraints as
+Model Predicitve Control is a flexible and powerful control strategy. It naturally handles nonlinearities and constraints as
 well as multiple inputs and outputs. The underlying idea is based on optimal control theory. \gls{mpc} is characterized by
 two key features. First, an iterative online optimization is performed to compute the next control input. Second, at each 
 instance of time an \gls{ocp} is solved, therefore the time horizon of the \gls{ocp} moves forward. \cite{nmpcBible}
@@ -217,7 +217,7 @@ stability of the closed loop system. \cite{RaffAllgoewer}
 \begin{tcolorbox}[colback=gray!20, colframe=gray!80,title=Theorem 1,arc=0.0mm]
 The closed loop system is asymptotically stable if the optimal control problem is feasible at the first time instant and
 the following assumptions are satisfied for a terminal cost $E$, a terminal region $\mathcal{E}$, and a locally stabilizing
-control law $u_{k}=\varphi\left(x_{k}\right)$:
+control law $u_{k}=\varphi\left(x_{k}\right)$:\\
 
 [A1] $E\left(x_{k}\right)>0, \forall x_{k} \in \mathbb{R}^{n} \backslash\{0\}$
 
@@ -239,7 +239,7 @@ origin of the system, this ensures stability at the last step of the \gls{ocp}.\
 
 \textbf{Terminal Region}\\
 No terminal costs are used, but a terminal region $\mathcal{E} = \{x_k \in \mathbb{R}^n \mid x_k^TPx_k \leq \alpha \}$
-is choosen as well as a locally stabilizing linear controller $\varphi(x_{k}) = K x_k$. This approach is also
+is choosen as well as a locally stabilizing linear controller $\varphi(x_{k}) = K x_k$. This approach is also called
 \textit{dual mode control}.\\
 
 \textbf{Terminal Region and Terminal Cost}\\
@@ -298,7 +298,7 @@ where $Q^* = Q + K^T R K \in \mathbb{R}^{n \times n}$ itself is positive definit
 positive definite and symmetric. The matrices $Q$ and $R$ might be used for \textit{Step 1} to obatain the linear feedback
 matrix $K$ based on LQ-regulators.\\
 
-\textit{Step 3.} Find the largest possible $\alpha_1$ s.t $Kx \in \mathcal{U} \quad \forall x \in \Omega_{\alpha_1}$.\\
+\textit{Step 3.} Find the largest possible $\alpha_1$ s.t $Kx \in \mathcal{U} \quad \forall x \in \Omega_{\alpha_1}$ with the sublevel set $\Omega_{\alpha_1}$\\
 
 \textit{Step 4.} Find the largest possible $\alpha \in (0,\alpha_1]$ s.t. $\{x_k \in \mathbb{R}^n \mid x_k^TPx_k \leq \alpha \}$ is an 
 inner approximation of the region of attraction of the closed loop dynamics of the linearly controlled system.
@@ -324,7 +324,7 @@ the ring of polynomial in $x \in \mathbb{R}^n$ with real coefficients, is a sum-
 there exists $q_1, \dots, q_m$ s.t.
 
 \begin{equation}
-	p(x)=\sum_{i=1}^m q_i^2(x)
+	p(x)=\sum_{i=1}^m q_i^2(x).
 \end{equation}
 
 The set of \gls{sos} polynomials will be denoted by $\Sigma[x]$. If a polynomial is sum-of-squares, it is also a nonnegativ polynomial $p(x) \geq 0$.
@@ -360,16 +360,17 @@ The resulting constraints for the optimiztion are
 	s_{j} &\in \Sigma[x] \quad \forall j [1 \dots 2m+1]\\
 	-s_{1 \dots m}(-x^TPx + \alpha) + (K_i x + u_{\text{max},i}) &\in \Sigma[x] \quad \forall i \in [1,m]\\
 	-s_{m+1 \dots 2m}(-x^TPx + \alpha) + (-K_i x - u_{\text{min},i}) &\in \Sigma[x] \quad \forall i \in [1,m]\\
-	V - \epsilon (x^Tx) &\in \Sigma[x]\\
-	s_{2m+1}(V-\alpha) - \nabla V \cdot f - \epsilon (x^Tx) &\in \Sigma[x]
+	V - \epsilon (x^Tx) &\in \Sigma[x] \label{eq:lyap1} \\
+	s_{2m+1}(V-\alpha) - \nabla V \cdot f - \epsilon (x^Tx) &\in \Sigma[x] \label{eq:lyap2}
 \end{align}
 
 where $m$ is denoting the number of inputs to the system. Note that $K_i$ is the $i$-th row vector of the feedback matrix $K$. This enables
-asymetric input constraints $u_{\text{max},i}$ and $u_{\text{min},i}$. Costraint (18) and (19) are base on \ref{sec:lyapunov}. These constraints ensure dissipativity of the system inside the found sublevel set and
+asymetric input constraints $u_{\text{max},i}$ and $u_{\text{min},i}$. Costraint \eqref{eq:lyap1} and \eqref{eq:lyap2} are base on \ref{sec:lyapunov}.
+These constraints ensure dissipativity of the system inside the found sublevel set and
 therefore asymptotical stability. The polynomial $V=x^TPx$ is the lyapunov function in that sense. Note that $V$ is indeed a lyapunov function because the matrix 
 $P$ is positive definite. According to \ref{sec:lyapunov} it is necessary to proof positive definiteness to ensure stability, instead of
-positive semidefiniteness. The term $\epsilon (x^Tx)$ ensures positive definiteness for (18) and (19) instead of just positive semidefiniteness which would follow
-from (18) and (19) being sum-of-squares. The constraints given above form a set containment problem. The setup of the constraints and the problem are based on the
+positive semidefiniteness. The term $\epsilon (x^Tx)$ ensures positive definiteness for \eqref{eq:lyap1} and \eqref{eq:lyap2} instead of just positive semidefiniteness which would follow
+from \eqref{eq:lyap1} and \eqref{eq:lyap2} being sum-of-squares. The constraints given above form a set containment problem. The setup of the constraints and the problem are based on the
 following procedure, called \textit{Generalized S-procedure}.
 
 \begin{tcolorbox}[colback=gray!20, colframe=gray!80,title=Generalized S-procedure \cite{loureiro2023presentation},arc=0.2mm]        
@@ -427,7 +428,7 @@ States are chosen as $x = \begin{bmatrix} r & \dot{r} & \alpha & \dot{\alpha} \e
         m x_1 x_4^2 - m g \left(\frac{x_3^5}{120} - \frac{x_3^3}{6} + x_3\right) \cdot k \\
         x_4 \\
         u
-    \end{bmatrix}
+    \end{bmatrix}.
 \end{align}
 
 Note that the $\sin()$ term is approximated by a Taylor series epansion of degree five in order to obtain a polynomial system.
@@ -456,7 +457,7 @@ The constant $k$ combines the physical parameters of the system. Table \ref{tbl:
     \end{tabular}
 \end{table}
 
-\textbf{Remark 1.} In general, it might not be the case that the simulation temrinates before the Taylor approximation is not valid anymore.
+\textbf{Remark 1.} In general, it might not be the case that the simulation terminates before the Taylor approximation is not valid anymore.
 This could lead to an additional constraints for the sublevel set optimization \eqref{eq:sos_problem}
 
 \begin{align}
@@ -502,7 +503,7 @@ for the QIH and TR controllers.
 \end{figure}
 
 Note that \ref{pic:LQRvsPole} shows the sliced terminal region for the states $r$ and $\dot{r}$. The $Q$ and $R$ matrix for the LQR controller are chosen
-as $Q = 0.25 \cdot \mathbf{I}^4$, where $\mathbf{I}^4$ is dnoting the $4\times 4$ identity matrix and $R = 1$. The matrices are the same as for Lyapunov
+as $Q = 0.25 \cdot \mathbf{I}^4$, where $\mathbf{I}^4$ is denoting the $4\times 4$ identity matrix and $R = 1$. The matrices are the same as for Lyapunov
 equation in \textit{Step 2}.
 
 
@@ -537,7 +538,7 @@ This result was to expect, because the TC controller (the \gls{mpc}) has to brin
 \end{figure}
 
 The QIH controller and the TR controller show similar performance. Compared to the NTC and TC controller, their perofemance is in between. With their respective 
-design approach in mind, this result was also to expect. The \gls{mpc} of the QIH and TR controller just has to get the system into the terminal region.
+design approach in mind, this result was also to expect. The \gls{mpc} of the QIH and TR controller just have to get the system into the terminal region.
 Figure \ref{pic:bb_time_u} shows that the QIH and TR controller have overall the lowest input to the system which can be considered as more efficient. 
 Furthermore, the QIH and TR controller have very similar
 trajectories and behavior. The terminal costs don't seem to have an significant impact for this specific example. The black dots in all result figures show the
