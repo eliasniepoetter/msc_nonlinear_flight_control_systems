@@ -487,7 +487,11 @@ SOSOPT \cite{seiler2013sosopt}. SOSOPT is a MATLAB toolbox for solving sum-of-sq
 described in \eqref{eq:sos_problem}. The \gls{mpc} is imeplemented with the help of the open-source software package CasADi \cite{Andersson2019}.
 CasADi is software framework for numerical optimization, especially suited for optimal control and therefore \gls{mpc}. The closed simulation is implemented
 via a simple Euler integration scheme. The optimal control problem is solved through a multiple shooting method. The solver used for the nonlinaer 
-optimization problem is IPOPT \cite{Wächter2006}. IPOPT is a robust interior-point solver that can be interfaced with CasADi.
+optimization problem is IPOPT \cite{Wächter2006}. IPOPT is a robust interior-point solver that can be interfaced with CasADi.\\
+
+\textbf{Remark 2.} The presented \gls{mpc} formulation in \ref{sec:mpc} is for discrete time systems. The above systems dynamics of the Beam and Ball
+system are given in continous time. However, due to the Euler integration used to solve the continous time ODEs, the dynamics are discretised with the time
+step of the closed-loop simulation resp. the time step of the \gls{mpc}.
 
 
 \subsection{Results}
