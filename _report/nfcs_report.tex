@@ -134,11 +134,12 @@ for the ball beam system.\\
 The goal of the project is to utilize the methods of \gls{sos} Programming to enhance the design of nonlinear \gls{mpc}.
 \gls{mpc} is a powerful control approach for nonlinear systems based on optimal control theory.
 Guaranteeing closed-loop stability of \gls{mpc} is a crucial aspect of the design and fundamental for all control systems.
-There exists different approaches to guarantee closed-loop stability of \gls{mpc}, from which some are presented in this report.
+There are several different approaches to guarantee closed-loop stability of \gls{mpc}, from which some are presented in this report.
 Those presented rely on the conecpt of \textit{terminal conditions}. These terminal conditions, consisting of a \textit{terminal region} 
 and \textit{terminal costs}, have to fullfill certain properties in order to guarantee stability. The terminal region has to be an invariant set.
 It is a \textit{region of attraction} of the closed-loop system. The terminal costs have to be a \textit{Lyapunov function} for the closed-loop system.
-The synthesis of such terminal conditions fullfilling the said properties is done via \gls{sos} methods. The report first introduces the basics of \gls{mpc} in \ref{sec:mpc}. Continuing with the synthesis of terminal conditions for \gls{mpc},
+The synthesis of such terminal conditions fullfilling said properties is achieved via \gls{sos} methods. The report first introduces the basics of \gls{mpc} in \ref{sec:mpc}.
+Continuing with the synthesis of terminal conditions for \gls{mpc},
 focussing on \gls{sos} methods in \ref{sec:synTermCond}. Lastly, the methods presented are applied to the 
 ball beam system. The results are shown and discussed in \ref{sec:example}.
 
@@ -192,7 +193,7 @@ where
     J\left(\nu, x_k\right)=\underbrace{E\left(x_{k+N \mid k}\right)}_{\text{terminal costs}} + \underbrace{\sum_{i=k}^{k+N-1} F\left(x_{i \mid k}, u_{i \mid k}\right)}_{\text{stage costs}}
 \end{equation}
 
-with $\mathcal{U}$ input constraints,  $\mathcal{X}$ state constraints and $\mathcal{E}$ terminal region/set as the constraining sets.
+with the sets $\mathcal{U}$ and $\mathcal{X}$ defined by the constraints and $\mathcal{E}$ the terminal region/set.
 The \gls{ocp} is solved for the prediction horizon $N$, the initial condition $x_k$ at the current time step $t_k$, the dynamics
 of the system given by $f\left(x_{i \mid k}, u_{i \mid k}\right)$ and the terminal state $x_{k+N \mid k}$. The cost function \eqref{eq:mpc_costFunction}
 consists of the terminal costs at last time instance $t_N$ of the optimization and the stage costs for all other time instances starting from
@@ -212,7 +213,7 @@ See \cite{nmpcBible} and \cite{RaffAllgoewer} for details on the formulation of 
 
 \subsection{Terminal Conditions for MPCs}
 The shown \gls{mpc} includes terminal conditions. These conditions are part of the design of the \gls{mpc} and are used to
-guarantee certain stability properties of the closed loop system. The followong Theorem connects terminal conditions and
+guarantee certain stability properties of the closed loop system. The following Theorem connects terminal conditions and
 stability of the closed loop system. \cite{RaffAllgoewer}
 
 \begin{tcolorbox}[colback=gray!20, colframe=gray!80,title=Theorem 1,arc=0.0mm]
@@ -236,11 +237,11 @@ Several approaches based on Theorem 1 exist to ensure closed loop stability. Tho
 \textbf{Zero Terminal State Constraint}\\
 The idea is to use $E(x_k) = 0$, $\mathcal{E} = \{ 0 \}$ and $\varphi(x_{k}) = 0$. No linear controller is used.
 The stability of the \gls{mpc} is guaranteed through $x_{k+N \mid k} = 0$. When assuming an equlibrium at the
-origin of the system, this ensures stability at the last step of the \gls{ocp}.\\
+origin of the system, stability at the last step of the \gls{ocp} is ensured.\\
 
 \textbf{Terminal Region}\\
 No terminal costs are used, but a terminal region $\mathcal{E} = \{x_k \in \mathbb{R}^n \mid x_k^TPx_k \leq \alpha \}$
-is choosen as well as a locally stabilizing linear controller $\varphi(x_{k}) = K x_k$. This approach is also called
+is chosen as well as a locally stabilizing linear controller $\varphi(x_{k}) = K x_k$. This approach is also called
 \textit{dual mode control}.\\
 
 \textbf{Terminal Region and Terminal Cost}\\
@@ -252,13 +253,13 @@ calculated off-line. The procedure is described in section \ref{sec:synTermCond}
 
 \subsection{Variations of \gls{mpc}}
 There are several variations of the \gls{mpc} formulation. Two important distinctions have to be made regarding the length
-of the prediction horiton. One differentiate between \textit{finite} and \textit{infinite} horizon optimal control. presented
+of the prediction horizon. One has to differentiate between \textit{finite} and \textit{infinite} horizon optimal control. Presented
 above is the finite horizon \gls{mpc}. The infinite horizon \gls{mpc}, as the name implies, has an infinite prediction horizon
 $N \rightarrow \infty$. It can be shown that the inifinte horizon \gls{mpc} asymptotically stabilizes the system, without need
 of any terminal conditions. Hence the name \textit{quasi-infinite horizon} is motivated by this property.
 Furthermore, it should be differentiated between \textit{stabilizing} and \textit{tracking} \gls{mpc}. The stabilizing \gls{mpc}
 is used to stabilize the system around an equilibrium point. The tracking \gls{mpc} is used to follow
-a reference trajectory as good as possible. For the stabilizing \gls{mpc} the reference can assumed by constant zero, when the 
+a reference trajectory as good as possible. For the stabilizing \gls{mpc} the reference can assumed to be constant zero, when the 
 system is stable around the origin. Given the definitions above, it is possible to introduce the tracking \gls{mpc} by utilizing
 the difference, or error, of the current state to the reference $e_k = x_k - x_{\text{ref},k}$ as a new state. In other words,
 the tracking \gls{mpc} is a stabilizing \gls{mpc} for the error dynamics of the system. Tracking \gls{mpc} won't be considered in
@@ -315,7 +316,7 @@ The system is asymptotically stable in the sense of Lyapunov if the following co
 	V(x) &> 0 \text{ if and only if } x\neq0\\
 	\dot{V}(x) &= \nabla V \cdot f(x) < 0 \quad \forall x \neq 0
 \end{align}
-In that case, $V(x)$ is calles a \textit{Lyapunov function}. Note that these conditions are not sufficient to prove global asymptotical stability.
+In that case, $V(x)$ is called a \textit{Lyapunov function}. Note that these conditions are not sufficient to prove global asymptotical stability.
 For that to be the case, $V(x)$ also has to be radially unbounded.
 
 
@@ -329,7 +330,7 @@ there exists $q_1, \dots, q_m$ s.t.
 \end{equation}
 
 The set of \gls{sos} polynomials will be denoted by $\Sigma[x]$. If a polynomial is sum-of-squares, it is also a nonnegativ polynomial $p(x) \geq 0$.
-Subsequently, if we want to proof wether a polynomial is nonnegative or not, we can now relax this problem to the question, wether the the polynomial
+Subsequently, if we want to proof wether a polynomial is nonnegative or not, we can now relax this problem to the question, whether the the polynomial
 is sum-of-squares or not. The advantage of this relaxation over the orginal problem is that solving the problem to verify if a polynomial is 
 sum-of-squares can be done in polynomial time. Proofing if a polynomial is nonnegative is a NP-hard problem. The verification on whether a polynomial
 is sum-of-squares or not is done by solving a \gls{sdp}.\\
@@ -348,7 +349,7 @@ This task is done via a \gls{sdp}.
 
 \subsection{Sublevel set optimization}
 In \textit{Step 3} and \textit{4} one tries to find the largest sublevel set of a given function satisfying certain constraints. These optimization problems
-can be formulated to one single problem. The idea is to setup a nonlinear root search for the parameter $\alpha$. An iterative 
+can be formulated to one single problem. The idea is to set up a nonlinear root search for the parameter $\alpha$. An iterative 
 algorithm, e.g. a bisection algorithm, is used to maximize the volume of the sublevel set which is achieved by maximising the parameter $\alpha$. The volume
 $\operatorname{vol}\left( \Omega \right)$ of a set $\Omega$ is defined as $\operatorname{vol}(A)=\int_{\mathbb{R}^n} \mathbbm{1}_A(\mathbf{x}) d \mathbf{x}$
 where $\mathbbm{1}_A : \mathbb{R}^n \rightarrow \mathbb{R}$ is defined by $\mathbbm{1}_A(x) = 1$ if $x \in \Omega$, otherwise $\mathbbm{1}_A(x) = 0$.
@@ -369,7 +370,7 @@ The resulting constraints for the optimiztion are
 \end{align}
 
 where $m$ is denoting the number of inputs to the system. Note that $K_i$ is the $i$-th row vector of the feedback matrix $K$. This enables
-asymetric input constraints $u_{\text{max},i}$ and $u_{\text{min},i}$. Costraint \eqref{eq:lyap1} and \eqref{eq:lyap2} are base on \ref{sec:lyapunov}.
+asymetric input constraints $u_{\text{max},i}$ and $u_{\text{min},i}$. Costraint \eqref{eq:lyap1} and \eqref{eq:lyap2} are based on \ref{sec:lyapunov}.
 These constraints ensure dissipativity of the system inside the found sublevel set and
 therefore asymptotical stability. The polynomial $V=x^TPx$ is the lyapunov function in that sense. Note that $V$ is indeed a lyapunov function because the matrix 
 $P$ is positive definite. According to \ref{sec:lyapunov} it is necessary to proof positive definiteness to ensure stability, instead of
@@ -462,7 +463,7 @@ The constant $k$ combines the physical parameters of the system. Table \ref{tbl:
 \end{table}
 
 \textbf{Remark 1.} In general, it might not be the case that the simulation terminates before the Taylor approximation is not valid anymore.
-This could lead to an additional constraints for the sublevel set optimization \eqref{eq:sos_problem}
+This could lead to additional constraints for the sublevel set optimization \eqref{eq:sos_problem}
 
 \begin{align}
 	-s_{1 \dots l}(-x^TPx + \alpha) + (x_{n} + \gamma_{\text{max},r}) \in \Sigma[x] \quad \forall l \in [1,r] \\
@@ -475,16 +476,16 @@ The number of constraints depends on the number of Taylor approximations $r$ use
 The TC and NTC controller consists just of the \gls{mpc}. The QIH and TR controller have linear controller which takes over as soon as they enter the terminal region.
 The time step for the closed loop simulation is set to $\Delta t_{\text{cl}} = \SI{0.01}{\second}$.  The time step for the \gls{mpc} is set to
 $\Delta t_{\text{mpc}} = \SI{0.05}{\second}$. The prediction horizon is set to $N = \SI{1}{\second}$. No noise is added to the states and the true
-model is known. The stage costs are chosen to
+model is known. The stage costs are chosen as
 
 \begin{equation}
 	F\left(x_{i \mid k}, u_{i \mid k}\right) = \frac{1}{2} \lVert x_{i \mid k} \rVert_2 + \frac{1}{2} \lVert u_{i \mid k} \rVert_2.
 \end{equation}
 
 \subsection{Implementation Details}
-The example is implemented in MATLAB R2023b.  The temrinal conditions are synthesized with help of the open-source software package
+The example is implemented in MATLAB R2023b.  The terminal conditions are synthesized with help of the open-source software package
 SOSOPT \cite{seiler2013sosopt}. SOSOPT is a MATLAB toolbox for solving sum-of-squares problems. It is used to verify the set containment
-described in \eqref{eq:sos_problem}. The \gls{mpc} is imeplemented with the help of the open-source software package CasADi \cite{Andersson2019}.
+described in \eqref{eq:sos_problem}. The \gls{mpc} is implemented with the help of the open-source software package CasADi \cite{Andersson2019}.
 CasADi is software framework for numerical optimization, especially suited for optimal control and therefore \gls{mpc}. The closed simulation is implemented
 via a simple Euler integration scheme. The optimal control problem is solved through a multiple shooting method. The solver used for the nonlinaer 
 optimization problem is IPOPT \cite{Wächter2006}. IPOPT is a robust interior-point solver that can be interfaced with CasADi.\\
@@ -517,9 +518,10 @@ equation in \textit{Step 2}.
 
 \subsubsection*{\gls{mpc} Performance Analysis}
 Figure \ref{pic:bb_state_space} to \ref{pic:bb_time_u} show the results of the simulations. Most obvious is the rather poor performance of the NTC controller.
-It has highest excitations especially in state $x_3 = \alpha$ and $x_4 = \dot{\alpha}$ (see fig. \ref{pic:bb_state_space}). Compared to the other controllers, the NTC controller also takes longest to fully converge to the equilibrium. However, the NTC controller is still able to
+It has highest excitations especially in state $x_3 = \alpha$ and $x_4 = \dot{\alpha}$ (see fig. \ref{pic:bb_state_space}). Compared to the other controllers,
+the NTC controller also takes longest to fully converge to the equilibrium. However, the NTC controller is still able to
 stabilize the system. The most performant controller is the TC controller. It has the largest occuring input to the systems  and the fastest covergence.
-This result was to expect, because the TC controller (the \gls{mpc}) has to bring the system to the equilibrium in the given time horizon of $\SI{1}{\second}$. 
+This result was to be expect, since the TC controller (the \gls{mpc}) has to bring the system to the equilibrium in the given time horizon of $\SI{1}{\second}$. 
 
 \begin{figure}[h]
 	\begin{center}
@@ -546,7 +548,7 @@ This result was to expect, because the TC controller (the \gls{mpc}) has to brin
 \end{figure}
 
 The QIH controller and the TR controller show similar performance. Compared to the NTC and TC controller, their perofemance is in between. With their respective 
-design approach in mind, this result was also to expect. The \gls{mpc} of the QIH and TR controller just have to get the system into the terminal region.
+design approach in mind, this result was also expected. The \gls{mpc} of the QIH and TR controller just have to get the system into the terminal region.
 Figure \ref{pic:bb_time_u} shows that the QIH and TR controller have overall the lowest input to the system which can be considered as more efficient. 
 Furthermore, the QIH and TR controller have very similar
 trajectories and behavior. The terminal costs don't seem to have an significant impact for this specific example. The black dots in all result figures show the
@@ -583,7 +585,8 @@ stable around the origin. This approach is therefore not suitbale for systems wi
 terminal region because of a dependency on the linear controller. Different linear controllers lead to different terminal regions. Obtaining a satisfying terminal
 region may be an iterative process. The presented approach is also limited to polynomial systems which can lead to the use of Taylor series expansions, as 
 shown in the exmaple. To give an outlook for possible improvements, instead of optimizing the sublevel set for a fixed shape defined by $P$ a $V-s$ iteration could be implemented. 
-Using such an approach could allow for a more flexible terminal region, not restricted by to a shape that depends on the linear controller. Furthermore, in \cite{RaffAllgoewer} it is demonstrated that the finite horizon \gls{ocp} can be formulated as polynomial optimization problem and solved with \gls{sos} programs.
+Using such an approach could allow for a more flexible terminal region, not restricted by a shape that depends on the linear controller. Furthermore, in \cite{RaffAllgoewer} it
+is demonstrated that the finite horizon \gls{ocp} can be formulated as polynomial optimization problem and solved with \gls{sos} programs.
 It is shown that this can lead to significant performance improvements compared to solving the classical nonlinar optimization problem in \gls{mpc}. 
 
 
