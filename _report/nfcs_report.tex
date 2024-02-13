@@ -168,7 +168,7 @@ instance of time an \gls{ocp} is solved, therefore the time horizon of the \gls{
 	\end{center}
 \end{figure}
 
-Figure \ref{pic:nmpc_idea} illustrates the two key feastures of \gls{mpc} in discrete time. At time instance $t_n$ 
+Figure \ref{pic:nmpc_idea} illustrates the two key features of \gls{mpc} in discrete time. At time instance $t_n$ 
 the \gls{ocp} for the next $N$ time steps is solved. Given that the \gls{ocp} is feasible, the first optimal control
 input $u^*_0$ is applied to the system. The system evolves to the next time instance $t_{n+1}$ and the process repeats.
 
@@ -196,7 +196,7 @@ where
 with the sets $\mathcal{U}$ and $\mathcal{X}$ defined by the constraints and $\mathcal{E}$ the terminal region/set.
 The \gls{ocp} is solved for the prediction horizon $N$, the initial condition $x_k$ at the current time step $t_k$, the dynamics
 of the system given by $f\left(x_{i \mid k}, u_{i \mid k}\right)$ and the terminal state $x_{k+N \mid k}$. The cost function \eqref{eq:mpc_costFunction}
-consists of the terminal costs at last time instance $t_N$ of the optimization and the stage costs for all other time instances starting from
+consists of the terminal costs at the last time instance $t_N$ of the optimization and the stage costs for all other time instances starting from
 the initial condition. The optimal control sequence is defined as
 
 \begin{equation}
@@ -206,7 +206,7 @@ the initial condition. The optimal control sequence is defined as
 The control input $\mu$ at each discrete time step $t_k$ is the first element of the optimal control sequence $\nu^*$
 
 \begin{equation}
-\mu(x(t_k)) \coloneqq \nu^*(0)
+\mu(x(t_k)) \coloneqq \nu^*(0).
 \end{equation}
 
 See \cite{nmpcBible} and \cite{RaffAllgoewer} for details on the formulation of the \gls{ocp} resp. the \gls{mpc} formulation.
@@ -217,7 +217,7 @@ guarantee certain stability properties of the closed loop system. The following 
 stability of the closed loop system. \cite{RaffAllgoewer}
 
 \begin{tcolorbox}[colback=gray!20, colframe=gray!80,title=Theorem 1,arc=0.0mm]
-The closed loop system is asymptotically stable if the optimal control problem is feasible at the first time instant and
+The closed loop system is asymptotically stable if the optimal control problem is feasible at the first time instance and
 the following assumptions are satisfied for a terminal cost $E$, a terminal region $\mathcal{E}$, and a locally stabilizing
 control law $u_{k}=\varphi\left(x_{k}\right)$:\\
 
@@ -300,7 +300,7 @@ where $Q^* = Q + K^T R K \in \mathbb{R}^{n \times n}$ itself is positive definit
 positive definite and symmetric. The matrices $Q$ and $R$ might be used for \textit{Step 1} to obatain the linear feedback
 matrix $K$ based on LQ-regulators.\\
 
-\textit{Step 3.} Find the largest possible $\alpha_1$ s.t $Kx \in \mathcal{U} \quad \forall x \in \Omega_{\alpha_1}$ with the sublevel set $\Omega_{\alpha_1}$\\
+\textit{Step 3.} Find the largest possible $\alpha_1$ s.t $-Kx \in \mathcal{U} \quad \forall x \in \Omega_{\alpha_1}$ with the sublevel set $\Omega_{\alpha_1}$\\
 
 \textit{Step 4.} Find the largest possible $\alpha \in (0,\alpha_1]$ s.t. $\{x_k \in \mathbb{R}^n \mid x_k^TPx_k \leq \alpha \}$ is an 
 inner approximation of the region of attraction of the closed loop dynamics of the linearly controlled system.
@@ -321,7 +321,7 @@ For that to be the case, $V(x)$ also has to be radially unbounded.
 
 
 \subsection{\gls{sos} Programming \cite{cunis_loureiro2023}}
-\gls{sos} programming is used to \textit{verify} wether a given, potentially multivariate, polynomial $p(x) \in \mathbb{R}[x]$, where $\mathbb{R}[x]$ denotes
+\gls{sos} programming is used to \textit{verify} whether a given, potentially multivariate, polynomial $p(x) \in \mathbb{R}[x]$, where $\mathbb{R}[x]$ denotes
 the ring of polynomial in $x \in \mathbb{R}^n$ with real coefficients, is a sum-of-squares polynomial. A polynomial $p \in \mathbb{R}^n$ is sum-of-squares if
 there exists $q_1, \dots, q_m$ s.t.
 
@@ -330,7 +330,7 @@ there exists $q_1, \dots, q_m$ s.t.
 \end{equation}
 
 The set of \gls{sos} polynomials will be denoted by $\Sigma[x]$. If a polynomial is sum-of-squares, it is also a nonnegativ polynomial $p(x) \geq 0$.
-Subsequently, if we want to proof wether a polynomial is nonnegative or not, we can now relax this problem to the question, whether the the polynomial
+Subsequently, if we want to proof whether a polynomial is nonnegative or not, we can now relax this problem to the question, whether the the polynomial
 is sum-of-squares or not. The advantage of this relaxation over the orginal problem is that solving the problem to verify if a polynomial is 
 sum-of-squares can be done in polynomial time. Proofing if a polynomial is nonnegative is a NP-hard problem. The verification on whether a polynomial
 is sum-of-squares or not is done by solving a \gls{sdp}.\\
@@ -375,7 +375,7 @@ These constraints ensure dissipativity of the system inside the found sublevel s
 therefore asymptotical stability. The polynomial $V=x^TPx$ is the lyapunov function in that sense. Note that $V$ is indeed a lyapunov function because the matrix 
 $P$ is positive definite. According to \ref{sec:lyapunov} it is necessary to proof positive definiteness to ensure stability, instead of
 positive semidefiniteness. The term $\epsilon (x^Tx)$ ensures positive definiteness for \eqref{eq:lyap1} and \eqref{eq:lyap2} instead of just positive semidefiniteness which would follow
-from \eqref{eq:lyap1} and \eqref{eq:lyap2} being sum-of-squares. The constraints given above form a set containment problem. The setup of the constraints and the problem are based on the
+from \eqref{eq:lyap1} and \eqref{eq:lyap2} being sum-of-squares. The constant $\epsilon$ can be chosen to be very small, e.g. $10^{-6}$. The constraints given above form a set containment problem. The setup of the constraints and the problem are based on the
 following procedure, called \textit{Generalized S-procedure}.
 
 \begin{tcolorbox}[colback=gray!20, colframe=gray!80,title=Generalized S-procedure \cite{loureiro2023presentation},arc=0.2mm]        
@@ -407,7 +407,7 @@ Based on an exemplary system a \gls{mpc} with terminal conditions is designed us
 
 
 \subsection{Setup and Implementation}
-The exemplary system is the ball beam system.
+The exemplary system is the ball and beam system.
 It consists of a ball rolling on a beam. The beams angle is controlled by a motor. Gravity acting on the ball accelerates it accoding to the angle of the beam.
 Figure \ref{pic:sketch} shows the sketch of the system. 
 
@@ -466,14 +466,14 @@ The constant $k$ combines the physical parameters of the system. Table \ref{tbl:
 This could lead to additional constraints for the sublevel set optimization \eqref{eq:sos_problem}
 
 \begin{align}
-	-s_{1 \dots l}(-x^TPx + \alpha) + (x_{n} + \gamma_{\text{max},r}) \in \Sigma[x] \quad \forall l \in [1,r] \\
-	-s_{1 \dots l}(-x^TPx + \alpha) + (-x_{n} - \gamma_{\text{min},r}) \in \Sigma[x] \quad \forall l \in [1,r]
+	-s_{1 \dots l}(-x^TPx + \alpha) + (-x_{n} + \gamma_{\text{max},r}) \in \Sigma[x] \quad \forall l \in [1,r] \\
+	-s_{1 \dots l}(-x^TPx + \alpha) + (x_{n} - \gamma_{\text{min},r}) \in \Sigma[x] \quad \forall l \in [1,r]
 \end{align}
 
 where $\gamma_{\text{max},r}$ and $\gamma_{\text{min},r}$ are the bounds of the interval where the Taylor approximation holds for a state $x_n$.
 The number of constraints depends on the number of Taylor approximations $r$ used.\\
 
-The TC and NTC controller consists just of the \gls{mpc}. The QIH and TR controller have linear controller which takes over as soon as they enter the terminal region.
+The TC and NTC controller consists just of the \gls{mpc}. The QIH and TR controller have a linear controller which takes over as soon as they enter the terminal region.
 The time step for the closed loop simulation is set to $\Delta t_{\text{cl}} = \SI{0.01}{\second}$.  The time step for the \gls{mpc} is set to
 $\Delta t_{\text{mpc}} = \SI{0.05}{\second}$. The prediction horizon is set to $N = \SI{1}{\second}$. No noise is added to the states and the true
 model is known. The stage costs are chosen as
@@ -490,7 +490,7 @@ CasADi is software framework for numerical optimization, especially suited for o
 via a simple Euler integration scheme. The optimal control problem is solved through a multiple shooting method. The solver used for the nonlinaer 
 optimization problem is IPOPT \cite{Wächter2006}. IPOPT is a robust interior-point solver that can be interfaced with CasADi.\\
 
-\textbf{Remark 2.} The presented \gls{mpc} formulation in \ref{sec:mpc} is for discrete time systems. The above systems dynamics of the Beam and Ball
+\textbf{Remark 2.} The presented \gls{mpc} formulation in \ref{sec:mpc} is for discrete time systems. The above system dynamics of the Beam and Ball
 system are given in continous time. However, due to the Euler integration used to solve the continous time ODEs, the dynamics are discretised with the time
 step of the closed-loop simulation resp. the time step of the \gls{mpc}.
 
@@ -511,7 +511,7 @@ for the QIH and TR controllers.
 	\end{center}
 \end{figure}
 
-Note that \ref{pic:LQRvsPole} shows the sliced terminal region for the states $r$ and $\dot{r}$. The $Q$ and $R$ matrix for the LQR controller are chosen
+Note that fig. \ref{pic:LQRvsPole} shows the sliced terminal region for the states $r$ and $\dot{r}$. The $Q$ and $R$ matrix for the LQR controller are chosen
 as $Q = 0.25 \cdot \mathbf{I}^4$, where $\mathbf{I}^4$ is denoting the $4\times 4$ identity matrix and $R = 1$. The matrices are the same as for Lyapunov
 equation in \textit{Step 2}.
 
@@ -580,11 +580,11 @@ slightly earlier than the TR controller.
 
 This report covers the synthesis and exemplary application of terminal conditions for \gls{mpc} using \gls{sos} programming. The underlying theory as well as the 
 application is covered. \gls{sos} programmming is successfully used to estimate the terminal region for the \gls{mpc} design. The example covered shows that a 
-well desiged terminal region can lead to a more efficient control of the system. A drawback of the presented approach is the necessity of a system that is 
+well designed terminal region can lead to a more efficient control of the system. A drawback of the presented approach is the necessity of a system that is 
 stable around the origin. This approach is therefore not suitbale for systems with periodic limit cycles. It can further be quite difficult to obtain a 
 terminal region because of a dependency on the linear controller. Different linear controllers lead to different terminal regions. Obtaining a satisfying terminal
 region may be an iterative process. The presented approach is also limited to polynomial systems which can lead to the use of Taylor series expansions, as 
-shown in the exmaple. To give an outlook for possible improvements, instead of optimizing the sublevel set for a fixed shape defined by $P$ a $V-s$ iteration could be implemented. 
+shown in the exmaple. To give an outlook for possible improvements, instead of optimizing the sublevel set for a fixed shape defined by the matrix $P$, a $V-s$ iteration could be implemented. 
 Using such an approach could allow for a more flexible terminal region, not restricted by a shape that depends on the linear controller. Furthermore, in \cite{RaffAllgoewer} it
 is demonstrated that the finite horizon \gls{ocp} can be formulated as polynomial optimization problem and solved with \gls{sos} programs.
 It is shown that this can lead to significant performance improvements compared to solving the classical nonlinar optimization problem in \gls{mpc}. 
